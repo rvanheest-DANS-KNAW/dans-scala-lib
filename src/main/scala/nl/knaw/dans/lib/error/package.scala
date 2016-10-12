@@ -76,4 +76,17 @@ package object error {
         Success(xs.map(_.get).to(canBuildFrom))
     }
   }
+
+  // TODO put it here just because I had to put it somewhere. Maybe we should restrict this to only work on streams, because that's what it's gonna be used for anyway.
+  // TODO test this carefully!!! Is this really what we expect it to be in all circumstances?
+  implicit class StreamCollectResults[M[_], T](val stream: M[Try[T]])(implicit ev: M[Try[T]] <:< Traversable[Try[T]]) {
+    def collectResultsFailFast(implicit canBuildFrom: CanBuildFrom[Nothing, T, M[T]]): Try[M[T]] = {
+      stream.find(_.isFailure)
+        .map {
+          case Failure(e) => Failure(e)
+          case Success(s) => Failure(new IllegalArgumentException(s"Success should never occur here, but got Success($s)"))
+        }
+        .getOrElse(Success(stream.map(_.get).to(canBuildFrom)))
+    }
+  }
 }
