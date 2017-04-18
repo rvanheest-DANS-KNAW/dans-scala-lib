@@ -41,7 +41,7 @@ package object error {
      *  - one `Success` with a list of `T`s or
      *  - a `Failure` with a [[CompositeException]] containing a list of exceptions.
      *
-     *  Example:
+     *  @example
      *  {{{
      *    import java.io.{File, FileNotFoundException}
      *    import nl.knaw.dans.lib.error._
@@ -74,6 +74,113 @@ package object error {
         }))
       else
         Success(xs.map(_.get).to(canBuildFrom))
+    }
+  }
+
+  implicit class TryExtensions[T](val t: Try[T]) extends AnyVal {
+    /**
+     * Applies the given side effecting function if and only if this is a `Success`.
+     *
+     * Example:
+     * {{{
+     *   import nl.knaw.dans.lib.error.TryExtensions
+     *
+     *   import scala.util.{Failure, Success, Try}
+     *
+     *   def getFileLength(file: File): Try[Long] =
+     *     if (file.exists) Success(file.length)
+     *     else Failure(new FileNotFoundException())
+     *
+     *   def performSideEffect(size: Long): Unit = println(s"size = $$size")
+     *
+     *   // Fill in existing or non-existing file
+     *   val file = new File("x")
+     *
+     *   getFileLength(file)
+     *     .doIfSuccess(size => performSideEffect(size))
+     * }}}
+     *
+     * @param sideEffect the side effecting function to be applied
+     * @return the original `Try`
+     */
+    def doIfSuccess[A](sideEffect: T => A): Try[T] = {
+      t match {
+        case Success(value) => Try {
+          sideEffect(value)
+          value
+        }
+        case failure => failure
+      }
+    }
+
+    /**
+     * Applies the given side effecting `PartialFunction` if and only if this is a `Failure` and
+     * the `Throwable` is defined in the `PartialFunction`.
+     *
+     * Example:
+     * {{{
+     *   import nl.knaw.dans.lib.error.TryExtensions
+     *
+     *   import scala.util.{Failure, Success, Try}
+     *
+     *   def getFileLength(file: File): Try[Long] =
+     *     if (file.exists) Success(file.length)
+     *     else Failure(new FileNotFoundException())
+     *
+     *   // Fill in existing or non-existing file
+     *   val file = new File("x")
+     *
+     *   getFileLength(file)
+     *     .doIfFailure {
+     *       case e: FileNotFoundException => println(e.getMessage)
+     *     }
+     * }}}
+     *
+     * @param sideEffect the side effecting function to be applied
+     * @return the original `Try`
+     */
+    def doIfFailure[A](sideEffect: PartialFunction[Throwable, A]): Try[T] = {
+      t match {
+        case Failure(throwable) if sideEffect.isDefinedAt(throwable) => Try {
+          sideEffect(throwable)
+          throw throwable
+        }
+        case other => other
+      }
+    }
+
+    /**
+     * Terminating operator for `Try` that converts the `Failure` case in a value.
+     *
+     * Example:
+     * {{{
+     *   import nl.knaw.dans.lib.error.TryExtensions
+     *   import java.io.{ File, FileNotFoundException }
+     *   import scala.util.{Failure, Success, Try}
+     *
+     *   def getFileName(file: File): Try[String] =
+     *     if (file.exists) Success(file.getName)
+     *     else Failure(new FileNotFoundException())
+     *
+     *   // Fill in existing or non-existing file
+     *   val file = new File("x")
+     *
+     *   getFileName(file)
+     *     .getOrRecover {
+     *       // error codes
+     *       case _: FileNotFoundException => "<file not found>"
+     *       case _ => "<an internal error occurred>"
+     *     }
+     * }}}
+     *
+     * @param recover recovers a `Throwable` and turns it into a value of type `T`
+     * @return either the value inside `Try` (on success) or the result of `recover` (on failure)
+     */
+    def getOrRecover[S >: T](recover: Throwable => S): S = {
+      t match {
+        case Success(value) => value
+        case Failure(throwable) => recover(throwable)
+      }
     }
   }
 }
