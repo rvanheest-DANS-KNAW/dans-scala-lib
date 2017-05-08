@@ -53,11 +53,7 @@ package object error {
      */
     def collectResults(implicit canBuildFrom: CanBuildFrom[Nothing, T, M[T]]): Try[M[T]] = {
       if (xs.exists(_.isFailure))
-        Failure(CompositeException(xs.flatMap {
-          case Success(_) => Seq.empty
-          case Failure(CompositeException(ts)) => ts
-          case Failure(e) => Seq(e)
-        }.toSeq))
+        Failure(CompositeException(xs.collect { case Failure(e) => e }.toSeq))
       else
         Success(xs.map(_.get).to(canBuildFrom))
     }
