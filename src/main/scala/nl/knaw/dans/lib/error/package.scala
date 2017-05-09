@@ -168,5 +168,39 @@ package object error {
         case Failure(throwable) => recover(throwable)
       }
     }
+
+    /**
+     * Combines the results of `this` and `other` by either applying the function in `this` to the
+     * value in `other` (if both are a `Success`) or returning a `Failure` (in case either one or
+     * both of them are a `Failure`).
+     *
+     * Example:
+     * {{{
+     *   import nl.knaw.dans.lib.error.TryExtensions
+     *
+     *   import scala.util.{Failure, Success, Try}
+     *
+     *   def add(i: Int)(j: Int): Int = i + j
+     *
+     *   val input1 = Try(1)
+     *   val input2 = Try(2)
+     *
+     *   Try { add _ }.combine(input1).combine(input2)
+     * }}}
+     *
+     * @param other the value to be applied to the function in `this`
+     * @param ev evidence that `T` is a function
+     * @tparam S the input of the function in `this`
+     * @tparam R the output of the function in `this`
+     * @return the result of applying the value in `this` to `other`
+     */
+    def combine[S, R](other: Try[S])(implicit ev: T <:< (S => R)): Try[R] = {
+      (t, other) match {
+        case (Success(f), Success(s)) => Try { f(s) }
+        case (Success(_), Failure(e)) => Failure(e)
+        case (Failure(e), Success(_)) => Failure(e)
+        case (Failure(e1), Failure(e2)) => Failure(new CompositeException(e1, e2))
+      }
+    }
   }
 }
