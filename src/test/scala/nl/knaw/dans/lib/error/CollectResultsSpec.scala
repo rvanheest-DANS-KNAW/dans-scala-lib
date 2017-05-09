@@ -48,7 +48,7 @@ class CollectResultsSpec extends FlatSpec with Matchers with Inside {
       Failure(new ArrayIndexOutOfBoundsException("foobar")) :: Success(4) :: Nil
 
     inside(collection.collectResults) {
-      case Failure(CompositeException(Seq(ex: ArrayIndexOutOfBoundsException))) =>
+      case Failure(CompositeException((ex: ArrayIndexOutOfBoundsException) :: Nil)) =>
         ex should have message "foobar"
     }
   }
@@ -58,7 +58,7 @@ class CollectResultsSpec extends FlatSpec with Matchers with Inside {
       Success(3) :: Failure(new NoSuchElementException("bar")) :: Success(5) :: Nil
 
     inside(collection.collectResults) {
-      case Failure(CompositeException(Seq(ex1: IllegalArgumentException, ex2: NoSuchElementException))) =>
+      case Failure(CompositeException((ex1: IllegalArgumentException) :: (ex2: NoSuchElementException) :: Nil)) =>
         ex1 should have message "foo"
         ex2 should have message "bar"
     }
@@ -73,7 +73,7 @@ class CollectResultsSpec extends FlatSpec with Matchers with Inside {
     val result = collection.collectResults
 
     inside(result) {
-      case Failure(CompositeException(Seq(ex1: IllegalArgumentException, ex2: NoSuchElementException, ex3: ArrayIndexOutOfBoundsException))) =>
+      case Failure(CompositeException((ex1: IllegalArgumentException) :: (ex2: NoSuchElementException) :: (ex3: ArrayIndexOutOfBoundsException) :: Nil)) =>
         ex1 should have message "foo"
         ex2 should have message "bar"
         ex3 should have message "baz"
