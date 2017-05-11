@@ -15,13 +15,13 @@
  */
 package nl.knaw.dans.lib.error
 
-import java.util.concurrent.atomic.{AtomicBoolean, AtomicInteger}
+import java.util.concurrent.atomic.{ AtomicBoolean, AtomicInteger }
 
-import org.scalatest.{FlatSpec, Matchers}
+import org.scalatest.{ FlatSpec, Inside, Matchers }
 
-import scala.util.{Failure, Success, Try}
+import scala.util.{ Failure, Success, Try }
 
-class TryExtensionsSpec extends FlatSpec with Matchers {
+class TryExtensionsSpec extends FlatSpec with Matchers with Inside {
 
   "doIfSuccess" should "perform a side effect if the Try is a Success" in {
     val value = 42
@@ -110,5 +110,60 @@ class TryExtensionsSpec extends FlatSpec with Matchers {
     }
 
     result shouldBe -99
+  }
+
+  // this function is used in the `combine` tests below.
+  // note that this will throw an exception if `j == 0`
+  private def divide(i: Int)(j: Int): Int = i / j
+
+  "combine" should "apply the function to the value if both are Success" in {
+    val f = Try { divide _ }
+    val x = Try(12)
+    val y = Try(2)
+
+    f.combine(x).combine(y) should matchPattern { case Success(6) => }
+  }
+
+  it should "return a failure if applying the function causes a failure" in {
+    val f = Try { divide _ }
+    val x = Try(12)
+    val y = Try(0)
+
+    inside(f.combine(x).combine(y)) {
+      case Failure(e: ArithmeticException) => e should have message "/ by zero"
+    }
+  }
+
+  it should "return a failure if the function is a failure" in {
+    val f: Try[(Int) => (Int) => Int] = Failure(new Exception("foo"))
+    val x = Try(12)
+    val y = Try(0)
+
+    inside(f.combine(x).combine(y)) {
+      case Failure(e) => e should have message "foo"
+    }
+  }
+
+  it should "return a failure if the value is a failure" in {
+    val f = Try { divide _ }
+    val x = Failure(new Exception("foo"))
+    val y = Try(0)
+
+    inside(f.combine(x).combine(y)) {
+      case Failure(e) => e should have message "foo"
+    }
+  }
+
+  it should "return a failure with a CompositeException if both the function and the value are a failure" in {
+    val f: Try[(Int) => (Int) => Int] = Failure(new Exception("foo"))
+    val x = Failure(new Exception("bar"))
+    val y = Failure(new Exception("baz"))
+
+    inside(f.combine(x).combine(y)) {
+      case Failure(CompositeException(e1 :: e2 :: e3 :: Nil)) =>
+        e1 should have message "foo"
+        e2 should have message "bar"
+        e3 should have message "baz"
+    }
   }
 }
