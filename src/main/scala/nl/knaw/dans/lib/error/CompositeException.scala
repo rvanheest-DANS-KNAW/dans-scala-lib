@@ -150,5 +150,5 @@ class CompositeException(private val errors: Throwable*) extends RuntimeExceptio
 object CompositeException {
   def apply(errors: Seq[Throwable]): CompositeException = new CompositeException(errors:_*)
 
-  def unapply(arg: CompositeException): Option[Seq[Throwable]] = Option(arg.throwables)
+  def unapply(arg: CompositeException): Option[List[Throwable]] = Option(arg.throwables.toList)
 }
