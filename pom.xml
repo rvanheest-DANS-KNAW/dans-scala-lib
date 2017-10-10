@@ -20,7 +20,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>nl.knaw.dans.lib</groupId>
-    <artifactId>dans-scala-lib</artifactId>
+    <artifactId>dans-scala-lib_2.12</artifactId>
     <version>1.x-SNAPSHOT</version>
 
     <inceptionYear>2016</inceptionYear>
