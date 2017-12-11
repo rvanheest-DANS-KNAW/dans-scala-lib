@@ -19,6 +19,11 @@ package object string {
 
   implicit class StringExtensions(val s: String) extends AnyVal {
 
+    /**
+     * Return true when all characters in the `String` are classified as ''whitespace'', false otherwise.
+     *
+     * @return whether all characters are whitespace
+     */
     def isBlank: Boolean = {
       s match {
         case null | "" => true
@@ -26,11 +31,21 @@ package object string {
       }
     }
 
+    /**
+     * Wraps the `String` in an `Option` and returns `Option.empty` if all characters are ''whitespace''.
+     *
+     * @return `None` if all characters are whitespace, `Some(s)` otherwise
+     */
     def toOption: Option[String] = {
       if (s.isBlank) Option.empty
       else Option(s)
     }
 
+    /**
+     * Returns the empty `String` if all characters are ''whitespace'', the original `String` otherwise.
+     *
+     * @return the empty `String` if all characters are ''whitespace'', the input otherwise
+     */
     def emptyIfBlank: String = s.toOption.getOrElse("")
   }
 }
