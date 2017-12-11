@@ -7,7 +7,7 @@ package object string {
     def isBlank: Boolean = {
       s match {
         case null | "" => true
-        case _ => s.exists(!Character.isWhitespace(_))
+        case _ => s.forall(Character.isWhitespace)
       }
     }
 
