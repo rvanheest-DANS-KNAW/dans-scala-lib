@@ -15,5 +15,7 @@ package object string {
       if (s.isBlank) Option.empty
       else Option(s)
     }
+
+    def emptyIfBlank: String = s.toOption.getOrElse("")
   }
 }
