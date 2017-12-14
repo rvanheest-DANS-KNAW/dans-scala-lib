@@ -20,9 +20,10 @@ package object string {
   implicit class StringExtensions(val s: String) extends AnyVal {
 
     /**
-     * Return true when all characters in the `String` are classified as ''whitespace'', false otherwise.
+     * Return true when all characters in the `String` are classified as ''whitespace'' or if
+     * the `String` is `null`, false otherwise.
      *
-     * @return whether all characters are whitespace
+     * @return whether whether the `String` is `null` or all characters are ''whitespace''
      */
     def isBlank: Boolean = {
       s match {
@@ -32,9 +33,10 @@ package object string {
     }
 
     /**
-     * Wraps the `String` in an `Option` and returns `Option.empty` if all characters are ''whitespace''.
+     * Wraps the `String` in an `Option` and returns `Option.empty` if all characters are ''whitespace''
+     * or if the `String` is `null`.
      *
-     * @return `None` if all characters are whitespace, `Some(s)` otherwise
+     * @return `None` if all characters are whitespace or if the `String` is `null`, `Some(s)` otherwise
      */
     def toOption: Option[String] = {
       if (s.isBlank) Option.empty
@@ -42,9 +44,11 @@ package object string {
     }
 
     /**
-     * Returns the empty `String` if all characters are ''whitespace'', the original `String` otherwise.
+     * Returns the empty `String` if all characters are ''whitespace'' or if the `String` is `null`,
+     * the original `String` otherwise.
      *
-     * @return the empty `String` if all characters are ''whitespace'', the input otherwise
+     * @return the empty `String` if all characters are ''whitespace'' or if the `String` is `null`,
+     *         the input otherwise
      */
     def emptyIfBlank: String = s.toOption.getOrElse("")
   }
