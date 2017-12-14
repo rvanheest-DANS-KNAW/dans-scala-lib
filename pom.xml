@@ -37,7 +37,6 @@
         <java.version>1.8</java.version>
         <scala.compatVersion>2.12</scala.compatVersion>
         <scala.version>2.12.3</scala.version>
-        <main-class>NoMainClass</main-class>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
