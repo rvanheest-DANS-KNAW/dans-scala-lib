@@ -20,6 +20,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>nl.knaw.dans.shared</groupId>
+        <artifactId>dans-prototype</artifactId>
+        <version>1.63</version>
+    </parent>
+
     <groupId>nl.knaw.dans.lib</groupId>
     <artifactId>dans-scala-lib_2.12</artifactId>
     <version>1.x-SNAPSHOT</version>
@@ -90,66 +96,19 @@
 
         <plugins>
             <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.3</version>
-                <executions>
-                    <execution>
-                        <id>default-compile</id>
-                        <phase>compile</phase>
-                    </execution>
-                    <execution>
-                        <id>default-testCompile</id>
-                        <phase>test-compile</phase>
-                    </execution>
-                </executions>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                    <encoding>${project.build.sourceEncoding}</encoding>
-                </configuration>
+                <groupId>org.jfrog.buildinfo</groupId>
+                <artifactId>artifactory-maven-plugin</artifactId>
             </plugin>
-
             <plugin>
-                <!-- necessary for the license header in each file -->
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>2.8</version>
-                <executions>
-                    <execution>
-                        <phase>process-sources</phase>
-                        <goals>
-                            <goal>unpack</goal>
-                        </goals>
-                        <configuration>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>nl.knaw.dans.shared</groupId>
-                                    <artifactId>dans-build-resources</artifactId>
-                                    <version>2.3.1</version>
-                                    <outputDirectory>${project.build.directory}/dans-build-resources</outputDirectory>
-                                </artifactItem>
-                            </artifactItems>
-                        </configuration>
-                    </execution>
-                </executions>
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin</artifactId>
             </plugin>
-
             <plugin>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>2.2.1</version>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>jar-no-fork</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <includePom>true</includePom>
-                </configuration>
+                <artifactId>maven-release-plugin</artifactId>
             </plugin>
-
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+            </plugin>
             <plugin>
                 <groupId>net.alchim31.maven</groupId>
                 <artifactId>scala-maven-plugin</artifactId>
@@ -173,69 +132,6 @@
                     </args>
                 </configuration>
             </plugin>
-
-            <plugin>
-                <groupId>org.jfrog.buildinfo</groupId>
-                <artifactId>artifactory-maven-plugin</artifactId>
-                <version>2.4.1</version>
-                <executions>
-                    <execution>
-                        <id>build-info</id>
-                        <goals>
-                            <goal>publish</goal>
-                        </goals>
-                        <configuration>
-                            <publisher>
-                                <contextUrl>http://maven-repo.dans.knaw.nl</contextUrl>
-                                <username>{{ ARTIFACTORY_USER }}</username>
-                                <password>{{ ARTIFACTORY_PW }}</password>
-                                <repoKey>libs-release-local</repoKey>
-                                <snapshotRepoKey>libs-snapshot-local</snapshotRepoKey>
-                            </publisher>
-                        </configuration>
-                    </execution>
-                </executions>
-                <inherited>true</inherited>
-            </plugin>
-
-            <plugin>
-                <groupId>com.mycila</groupId>
-                <artifactId>license-maven-plugin</artifactId>
-                <version>2.11</version>
-                <executions>
-                    <execution>
-                        <phase>process-sources</phase>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <header>${project.build.directory}/dans-build-resources/license/apache2.txt</header>
-                    <properties>
-                        <owner>DANS - Data Archiving and Networked Services</owner>
-                        <email>info@dans.knaw.nl</email>
-                    </properties>
-                    <excludes>
-                        <exclude>LICENSE</exclude>
-                        <exclude>**/README</exclude>
-                        <exclude>*.sc</exclude>
-                        <exclude>src/main/resources/**</exclude>
-                        <exclude>src/test/resources/**</exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <artifactId>maven-release-plugin</artifactId>
-                <version>2.5.2</version>
-                <configuration>
-                    <tagNameFormat>v@{project.version}</tagNameFormat>
-                    <developmentVersion>1.x-SNAPSHOT</developmentVersion>
-                    <pushChanges>false</pushChanges>
-                </configuration>
-            </plugin>
-
             <plugin>
                 <groupId>org.scalatest</groupId>
                 <artifactId>scalatest-maven-plugin</artifactId>
@@ -252,21 +148,6 @@
                     <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
                     <junitxml>.</junitxml>
                     <filereports>WDF TestSuite.txt</filereports>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>2.4</version>
-                <configuration>
-                    <finalName>${project.artifactId}</finalName>
-                    <archive>
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                            <classpathPrefix>../lib/</classpathPrefix>
-                            <mainClass>${main-class}</mainClass>
-                        </manifest>
-                    </archive>
                 </configuration>
             </plugin>
         </plugins>
