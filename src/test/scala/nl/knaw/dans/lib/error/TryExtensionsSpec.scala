@@ -166,4 +166,14 @@ class TryExtensionsSpec extends FlatSpec with Matchers with Inside {
         e3 should have message "baz"
     }
   }
+
+  "unsafeGetOrThrow" should "return the value inside a Success" in {
+    Success(5).unsafeGetOrThrow shouldBe 5
+  }
+
+  it should "throw the exception in a Failure" in {
+    val e = new Exception("err msg")
+
+    the[Exception] thrownBy Failure(e).unsafeGetOrThrow shouldBe e
+  }
 }

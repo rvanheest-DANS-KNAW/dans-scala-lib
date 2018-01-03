@@ -91,7 +91,7 @@ class CompositeExceptionSpec extends FlatSpec with Matchers {
     ce.getCause.getCause.getCause.getCause.getCause.getCause.getCause shouldBe null
   }
 
-  "printStackTrace" should "" in {
+  "printStackTrace" should "include the messages (and stacktraces) of all exceptions in the composite exception" in {
     val ex1 = new Exception("msg1")
     val ex2 = new Exception("msg2", ex1)
     val ex3 = new Exception("msg3", ex2)
