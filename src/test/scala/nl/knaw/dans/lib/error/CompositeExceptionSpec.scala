@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *         http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -29,7 +29,7 @@ class CompositeExceptionSpec extends FlatSpec with Matchers {
     val ex5 = new Exception("msg5")
 
     val ce = new CompositeException(ex4, ex5)
-    ce.getMessage shouldBe "2 exceptions occurred."
+    ce.getMessage should startWith("2 exceptions occurred")
   }
 
   it should "flatten nested CompositeExceptions" in {
@@ -42,7 +42,7 @@ class CompositeExceptionSpec extends FlatSpec with Matchers {
 
     val ce1 = new CompositeException(ex4, ex5)
     val ce2 = new CompositeException(ce1, ex6)
-    ce2.getMessage shouldBe "3 exceptions occurred."
+    ce2.getMessage should startWith("3 exceptions occurred")
   }
 
   "getCause" should "return a chain of causes" in {
