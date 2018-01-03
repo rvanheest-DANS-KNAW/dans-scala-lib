@@ -29,7 +29,7 @@ class CompositeExceptionSpec extends FlatSpec with Matchers {
     val ex5 = new Exception("msg5")
 
     val ce = new CompositeException(ex4, ex5)
-    ce.getMessage shouldBe "2 exceptions occurred."
+    ce.getMessage should startWith("2 exceptions occurred")
   }
 
   it should "flatten nested CompositeExceptions" in {
@@ -42,7 +42,7 @@ class CompositeExceptionSpec extends FlatSpec with Matchers {
 
     val ce1 = new CompositeException(ex4, ex5)
     val ce2 = new CompositeException(ce1, ex6)
-    ce2.getMessage shouldBe "3 exceptions occurred."
+    ce2.getMessage should startWith("3 exceptions occurred")
   }
 
   "getCause" should "return a chain of causes" in {

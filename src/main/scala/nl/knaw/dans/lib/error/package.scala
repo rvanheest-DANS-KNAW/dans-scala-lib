@@ -17,7 +17,7 @@ package nl.knaw.dans.lib
 
 import scala.collection.generic.CanBuildFrom
 import scala.language.higherKinds
-import scala.util.{Failure, Success, Try}
+import scala.util.{ Failure, Success, Try }
 
 package object error {
 
@@ -27,8 +27,8 @@ package object error {
      *  - one `Success` with a list of `T`s or
      *  - a `Failure` with a [[CompositeException]] containing a list of exceptions.
      *
-     *  @example
-     *  {{{
+     * @example
+     * {{{
      *    import java.io.{File, FileNotFoundException}
      *    import nl.knaw.dans.lib.error._
      *    import scala.util.{Failure, Success, Try}
@@ -46,9 +46,8 @@ package object error {
      *      .map(_.mkString(", "))
      *      .recover { case t => println(t.getMessage) }
      *  }}}
-     *
      * @param canBuildFrom an implicit value of class `CanBuildFrom` which determines
-     *    the result class `M[T]` from the input type.
+     *                     the result class `M[T]` from the input type.
      * @return a consolidated result
      */
     def collectResults(implicit canBuildFrom: CanBuildFrom[Nothing, T, M[T]]): Try[M[T]] = {
@@ -185,7 +184,7 @@ package object error {
      * }}}
      *
      * @param other the value to be applied to the function in `this`
-     * @param ev evidence that `T` is a function
+     * @param ev    evidence that `T` is a function
      * @tparam S the input of the function in `this`
      * @tparam R the output of the function in `this`
      * @return the result of applying the value in `this` to `other`

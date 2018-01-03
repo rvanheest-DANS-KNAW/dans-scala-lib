@@ -36,12 +36,12 @@ trait DebugEnhancedLogging extends LazyLogging {
    *   [TRACE] someFunction [(s, i)]:  ("My input string",2)
    * }}}
    *
-   * @param value list of parameter values
+   * @param value     list of parameter values
    * @param enclosing implicitly passed in context from the sourcecode library
    * @tparam V type parameter, no idea how it works
    */
   def trace[V](value: sourcecode.Text[V])(implicit enclosing: sourcecode.Name): Unit = {
-    logger.trace(s"${enclosing.value} [${value.source}]: ${value.value}")
+    logger.trace(s"${ enclosing.value } [${ value.source }]: ${ value.value }")
   }
 
 
@@ -60,10 +60,11 @@ trait DebugEnhancedLogging extends LazyLogging {
    *   // This will result in a logging line like this (if the DEBUG log level is enabled):
    *   [DEBUG] someFunction: Doing important stuff here
    * }}}
-   * @param msg debug message to be logged
+   *
+   * @param msg       debug message to be logged
    * @param enclosing implicitly passed in context from the sourcecode library
    */
   def debug(msg: String)(implicit enclosing: sourcecode.Name): Unit = {
-    logger.debug(s"${enclosing.value}: $msg")
+    logger.debug(s"${ enclosing.value }: $msg")
   }
 }

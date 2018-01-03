@@ -34,8 +34,8 @@ class CompositeException(private val errors: Throwable*) extends RuntimeExceptio
   private def flattenExceptions(throwables: Seq[Throwable], result: mutable.ListBuffer[Throwable] = mutable.ListBuffer.empty): Seq[Throwable] = {
     throwables match {
       case Seq() => result
-      case Seq(CompositeException(ths), tail@_*) => flattenExceptions(ths ++ tail, result)
-      case Seq(th, tail@_*) => flattenExceptions(tail, result += th)
+      case Seq(CompositeException(ths), tail @ _*) => flattenExceptions(ths ++ tail, result)
+      case Seq(th, tail @ _*) => flattenExceptions(tail, result += th)
     }
   }
 
@@ -43,9 +43,14 @@ class CompositeException(private val errors: Throwable*) extends RuntimeExceptio
 
   lazy private val msg = throwables.size match {
     case 0 => "No exceptions occurred."
-    case 1 => "1 exception occurred."
-    case n => s"$n exceptions occurred."
+    case 1 => s"1 exception occurred: ${ throwables.head }"
+    case n => s"$n exceptions occurred: ${
+      throwables.zipWithIndex.map {
+        case (t, i) => s"($i) ${t.getMessage}"
+      }.mkString("\n--- START OF EXCEPTION LIST ---\n", "\n", "\n--- END OF EXCEPTION LIST ---")
+    }."
   }
+
   override def getMessage: String = msg
 
   lazy private val cause: Throwable = {
@@ -91,6 +96,7 @@ class CompositeException(private val errors: Throwable*) extends RuntimeExceptio
 
     emptyThrowable
   }
+
   override def getCause: Throwable = cause
 
   override def printStackTrace(): Unit = {
@@ -148,7 +154,7 @@ class CompositeException(private val errors: Throwable*) extends RuntimeExceptio
 }
 
 object CompositeException {
-  def apply(errors: Seq[Throwable]): CompositeException = new CompositeException(errors:_*)
+  def apply(errors: Seq[Throwable]): CompositeException = new CompositeException(errors: _*)
 
   def unapply(arg: CompositeException): Option[List[Throwable]] = Option(arg.throwables.toList)
 }
