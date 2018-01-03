@@ -198,5 +198,39 @@ package object error {
         case (Failure(e1), Failure(e2)) => Failure(new CompositeException(e1, e2))
       }
     }
+
+    /**
+     * Returns the value inside a `Success` or throws the `Throwable` inside a `Failure`.
+     * Note that this behavior is the same as `Try.get`, but that this explicitly acknowledges the
+     * potential danger of throwing an `Exception`.
+     *
+     * This method should only be used in the exceptional case that throwing the `Exception` is the
+     * only possible solution. The user should have made extra effort to avoid the use of this method
+     * before deciding to use it!
+     *
+     * Example:
+     * {{{
+     *   import nl.knaw.dans.lib.error.TryExtensions
+     *   import java.io.{ File, FileNotFoundException }
+     *   import scala.util.{Failure, Success, Try}
+     *
+     *   def getFileName(file: File): Try[String] =
+     *     if (file.exists) Success(file.getName)
+     *     else Failure(new FileNotFoundException())
+     *
+     *   // Fill in existing or non-existing file
+     *   val file = new File("x")
+     *
+     *   val filename = getFileName(file).unsafeGetOrThrow
+     * }}}
+     *
+     * @return
+     */
+    def unsafeGetOrThrow: T = {
+      t match {
+        case Success(value) => value
+        case Failure(throwable) => throw throwable
+      }
+    }
   }
 }
