@@ -21,8 +21,8 @@
 
     <parent>
         <groupId>nl.knaw.dans.shared</groupId>
-        <artifactId>dans-prototype</artifactId>
-        <version>1.63</version>
+        <artifactId>dans-scala-project</artifactId>
+        <version>2.2.1</version>
     </parent>
 
     <groupId>nl.knaw.dans.lib</groupId>
@@ -37,34 +37,18 @@
         <tag>HEAD</tag>
     </scm>
 
-    <properties>
-        <java.version>1.8</java.version>
-        <scala.compatVersion>2.12</scala.compatVersion>
-        <scala.version>2.12.3</scala.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
     <dependencies>
-        <dependency>
-            <groupId>org.scala-lang</groupId>
-            <artifactId>scala-library</artifactId>
-            <version>${scala.version}</version>
-        </dependency>
         <dependency>
             <groupId>com.typesafe.scala-logging</groupId>
             <artifactId>scala-logging_2.12</artifactId>
-            <version>3.7.2</version>
         </dependency>
         <dependency>
             <groupId>com.lihaoyi</groupId>
             <artifactId>sourcecode_2.12</artifactId>
-            <version>0.1.4</version>
         </dependency>
         <dependency>
             <groupId>org.scalatest</groupId>
             <artifactId>scalatest_2.12</artifactId>
-            <version>3.0.4</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -89,18 +73,7 @@
     </pluginRepositories>
 
     <build>
-        <sourceDirectory>src/main/scala</sourceDirectory>
-        <testSourceDirectory>src/test/scala</testSourceDirectory>
-
         <plugins>
-            <plugin>
-                <groupId>org.jfrog.buildinfo</groupId>
-                <artifactId>artifactory-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>com.mycila</groupId>
-                <artifactId>license-maven-plugin</artifactId>
-            </plugin>
             <plugin>
                 <artifactId>maven-release-plugin</artifactId>
             </plugin>
@@ -110,43 +83,10 @@
             <plugin>
                 <groupId>net.alchim31.maven</groupId>
                 <artifactId>scala-maven-plugin</artifactId>
-                <version>3.2.1</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>compile</goal>
-                            <goal>testCompile</goal>
-                            <goal>doc-jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <scalaCompatVersion>${scala.compatVersion}</scalaCompatVersion>
-                    <scalaVersion>${scala.version}</scalaVersion>
-                    <args>
-                        <arg>-target:jvm-1.8</arg>
-                        <arg>-deprecation</arg>
-                        <arg>-feature</arg>
-                    </args>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.scalatest</groupId>
                 <artifactId>scalatest-maven-plugin</artifactId>
-                <version>1.0</version>
-                <executions>
-                    <execution>
-                        <id>test</id>
-                        <goals>
-                            <goal>test</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
-                    <junitxml>.</junitxml>
-                    <filereports>WDF TestSuite.txt</filereports>
-                </configuration>
             </plugin>
         </plugins>
     </build>
