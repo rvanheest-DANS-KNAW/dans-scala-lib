@@ -10,6 +10,7 @@ trait MaskedSetCookieFormatter extends MaskedResponseHeaders {
     super.formatResponseHeader(headerName, headerValues) match {
       case (name, values) if name.toLowerCase == "set-cookie" =>
         name -> values.map(formatCookieValue)
+      case otherwise => otherwise
     }
   }
 

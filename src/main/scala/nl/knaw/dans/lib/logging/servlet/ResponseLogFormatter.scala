@@ -8,7 +8,7 @@ import scala.collection.JavaConverters._
 trait ResponseLogFormatter {
   this: ScalatraBase =>
 
-  def formatResponseLog(actionResult: ActionResult)(implicit request: HttpServletRequest,
+  protected def formatResponseLog(actionResult: ActionResult)(implicit request: HttpServletRequest,
                                                     response: HttpServletResponse): String = {
     val method = request.getMethod
     val status = actionResult.status

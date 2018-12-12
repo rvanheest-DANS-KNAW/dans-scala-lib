@@ -10,6 +10,7 @@ trait MaskedRemoteUserFormatter extends MaskedResponseHeaders {
     super.formatResponseHeader(headerName, headerValues) match {
       case (name, values) if name.toLowerCase == "remote_user" =>
         name -> values.map(formatRemoteUserValue)
+      case otherwise => otherwise
     }
   }
 
