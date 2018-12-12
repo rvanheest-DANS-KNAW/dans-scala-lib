@@ -19,7 +19,3 @@ trait RequestLogger extends AbstractRequestLogger with RequestLogFormatter {
 
   override def logRequest(): Unit = logger.info(formatRequestLog)
 }
-
-trait MaskedRequestLogger extends RequestLogger with MaskedRequestLogFormatter {
-  this: ScalatraBase with LazyLogging =>
-}
