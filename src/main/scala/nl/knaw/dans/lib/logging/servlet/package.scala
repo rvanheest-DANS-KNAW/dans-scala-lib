@@ -40,4 +40,7 @@ package object servlet {
       responseLogger.logResponse(actionResult)
     }
   }
+
+  type MaskedRequestLogger = masked.request.MaskedRequestLogger
+  type MaskedResponseLogger = masked.response.MaskedResponseLogger
 }
