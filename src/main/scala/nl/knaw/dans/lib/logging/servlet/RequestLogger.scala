@@ -1,7 +1,6 @@
 package nl.knaw.dans.lib.logging.servlet
 
 import com.typesafe.scalalogging.LazyLogging
-import nl.knaw.dans.lib.logging.servlet.masked.MaskedRequestLogFormatter
 import org.scalatra.ScalatraBase
 
 trait AbstractRequestLogger {

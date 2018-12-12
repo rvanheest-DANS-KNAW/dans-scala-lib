@@ -1,4 +1,4 @@
-package nl.knaw.dans.lib.logging.servlet.masked
+package nl.knaw.dans.lib.logging.servlet.masked.request
 
 import com.typesafe.scalalogging.LazyLogging
 import nl.knaw.dans.lib.logging.servlet.RequestLogger

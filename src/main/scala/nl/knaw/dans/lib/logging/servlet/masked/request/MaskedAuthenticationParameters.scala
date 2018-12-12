@@ -1,4 +1,4 @@
-package nl.knaw.dans.lib.logging.servlet.masked
+package nl.knaw.dans.lib.logging.servlet.masked.request
 
 import org.scalatra.ScalatraBase
 
