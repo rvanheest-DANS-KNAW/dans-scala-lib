@@ -19,6 +19,6 @@ import com.typesafe.scalalogging.LazyLogging
 import nl.knaw.dans.lib.logging.servlet.ResponseLogger
 import org.scalatra.ScalatraBase
 
-trait MaskedResponseLogger extends ResponseLogger with MaskedResponseLogFormatter {
+private[servlet] trait MaskedResponseLogger extends ResponseLogger with MaskedResponseLogFormatter {
   this: ScalatraBase with LazyLogging =>
 }
