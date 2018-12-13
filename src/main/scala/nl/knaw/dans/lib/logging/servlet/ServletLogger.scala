@@ -19,7 +19,7 @@ import com.typesafe.scalalogging.LazyLogging
 import org.scalatra.{ ActionResult, ScalatraBase }
 
 trait AbstractServletLogger {
-  this: ScalatraBase with RequestLogFormatter with ResponseLogFormatter =>
+  this: ScalatraBase =>
 
   implicit val responseLogger: AbstractServletLogger = this
 
@@ -27,8 +27,43 @@ trait AbstractServletLogger {
     logRequest()
   }
 
+  /**
+   * Performs the side effect of the logging of the request.
+   * This method is typically not called in user code, but rather in `ScalatraBase`'s `before` filter.
+   */
   def logRequest(): Unit
 
+  /**
+   * Performs the side effect of the logging of the response, contained in the given `ActionResult`.
+   * This method is either called directly or via the extension method provided by
+   * `LogResponseSyntax`.
+   *
+   * @example
+   * {{{
+   *   import nl.knaw.dans.lib.logging.DebugEnhancedLogging
+   *   import org.scalatra.{ Ok, ScalatraServlet }
+   *
+   *   class ExampleServlet extends ScalatraServlet with ServletLogger with DebugEnhancedLogging {
+   *     get("/") {
+   *       logResponse(Ok("All is well"))
+   *     }
+   *   }
+   * }}}
+   * @example
+   * {{{
+   *   import nl.knaw.dans.lib.logging.DebugEnhancedLogging
+   *   import nl.knaw.dans.lib.logging.servlet._
+   *   import org.scalatra.{ Ok, ScalatraServlet }
+   *
+   *   class ExampleServlet extends ScalatraServlet with ServletLogger with DebugEnhancedLogging {
+   *     get("/") {
+   *       Ok("All is well").logResponse
+   *     }
+   *   }
+   * }}}
+   * @param actionResult the `ActionResult to be logged`
+   * @return the original `ActionResult`
+   */
   def logResponse(actionResult: ActionResult): ActionResult
 }
 

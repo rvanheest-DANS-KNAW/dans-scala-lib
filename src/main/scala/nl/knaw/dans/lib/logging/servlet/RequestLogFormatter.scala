@@ -36,7 +36,7 @@ trait RequestLogFormatter {
 
   protected def formatHeaders(headers: HeaderMap): HeaderMap = headers.map(formatHeader)
 
-  protected def formatHeader(entry: HeaderMapEntry): HeaderMapEntry = entry
+  protected def formatHeader(header: HeaderMapEntry): HeaderMapEntry = header
 
   private def getHeaderMap(request: HttpServletRequest): HeaderMap = {
     // looks the same method as for ResponseLogFormatter, but everywhere different classes

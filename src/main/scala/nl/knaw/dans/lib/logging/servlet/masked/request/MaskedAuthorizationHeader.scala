@@ -21,8 +21,8 @@ import org.scalatra.ScalatraBase
 private[masked] trait MaskedAuthorizationHeader extends RequestLogFormatter {
   this: ScalatraBase =>
 
-  abstract override protected def formatHeader(entry: HeaderMapEntry): HeaderMapEntry = {
-    super.formatHeader(entry) match {
+  abstract override protected def formatHeader(header: HeaderMapEntry): HeaderMapEntry = {
+    super.formatHeader(header) match {
       case (name, values) if name.toLowerCase.endsWith("authorization") =>
         name -> values.map(formatAuthorizationHeader)
       case otherwise => otherwise

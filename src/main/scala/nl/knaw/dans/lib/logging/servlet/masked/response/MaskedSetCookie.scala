@@ -21,8 +21,8 @@ import org.scalatra.ScalatraBase
 private[masked] trait MaskedSetCookie extends ResponseLogFormatter {
   this: ScalatraBase =>
 
-  abstract override def formatResponseHeader(entry: HeaderMapEntry): HeaderMapEntry = {
-    super.formatResponseHeader(entry) match {
+  abstract override def formatResponseHeader(header: HeaderMapEntry): HeaderMapEntry = {
+    super.formatResponseHeader(header) match {
       case (name, values) if name.toLowerCase == "set-cookie" =>
         name -> values.map(formatCookieValue)
       case otherwise => otherwise
