@@ -21,6 +21,8 @@ import org.scalatra.ActionResult
 package object servlet {
 
   type HeaderMap = Map[String, Seq[String]]
+  type HeaderMapEntry = (String, Seq[String])
+  type MultiParamsEntry = (String, Seq[String])
 
   implicit private[servlet] class MapExtensions[K, V](val stringMap: Map[K, V]) extends AnyVal {
 

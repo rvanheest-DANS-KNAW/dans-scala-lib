@@ -1,13 +1,13 @@
 package nl.knaw.dans.lib.logging.servlet.masked.request
 
+import nl.knaw.dans.lib.logging.servlet.{ HeaderMapEntry, RequestLogFormatter }
 import org.scalatra.ScalatraBase
 
-trait MaskedAuthorizationHeader extends MaskedHeaders {
+trait MaskedAuthorizationHeader extends RequestLogFormatter {
   this: ScalatraBase =>
 
-  abstract override protected def formatHeader(headerName: String,
-                                               headerValues: Seq[String]): (String, Seq[String]) = {
-    super.formatHeader(headerName, headerValues) match {
+  abstract override protected def formatHeader(entry: HeaderMapEntry): HeaderMapEntry = {
+    super.formatHeader(entry) match {
       case (name, values) if name.toLowerCase.endsWith("authorization") =>
         name -> values.map(formatAuthorizationHeader)
       case otherwise => otherwise

@@ -36,7 +36,9 @@ trait RequestLogFormatter {
 
   protected def headersToString(headers: HeaderMap): String = headers.makeString
 
-  protected def formatHeaders(headers: HeaderMap): HeaderMap = headers
+  protected def formatHeaders(headers: HeaderMap): HeaderMap = headers.map(formatHeader)
+
+  protected def formatHeader(entry: HeaderMapEntry): HeaderMapEntry = entry
 
   private def getHeaderMap(request: HttpServletRequest): HeaderMap = {
     // looks the same method as for ResponseLogFormatter, but everywhere different classes
@@ -47,7 +49,9 @@ trait RequestLogFormatter {
 
   protected def parametersToString(params: MultiParams): String = params.makeString
 
-  protected def formatParameters(params: MultiParams): MultiParams = params
+  protected def formatParameters(params: MultiParams): MultiParams = params.map(formatParameter)
+
+  protected def formatParameter(param: MultiParamsEntry): MultiParamsEntry = param
 
   protected def formatRemoteAddress(remoteAddress: String): String = remoteAddress
 }
