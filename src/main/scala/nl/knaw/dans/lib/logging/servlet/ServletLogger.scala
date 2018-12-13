@@ -16,8 +16,29 @@
 package nl.knaw.dans.lib.logging.servlet
 
 import com.typesafe.scalalogging.LazyLogging
-import org.scalatra.ScalatraBase
+import org.scalatra.{ ActionResult, ScalatraBase }
 
-trait ServletLogger extends RequestLogger with ResponseLogger {
+trait AbstractServletLogger {
+  this: ScalatraBase with RequestLogFormatter with ResponseLogFormatter =>
+
+  implicit val responseLogger: AbstractServletLogger = this
+
+  before() {
+    logRequest()
+  }
+
+  def logRequest(): Unit
+
+  def logResponse(actionResult: ActionResult): ActionResult
+}
+
+trait ServletLogger extends AbstractServletLogger with RequestLogFormatter with ResponseLogFormatter {
   this: ScalatraBase with LazyLogging =>
+
+  override def logRequest(): Unit = logger.info(formatRequestLog)
+
+  override def logResponse(actionResult: ActionResult): ActionResult = {
+    logger.info(formatResponseLog(actionResult))
+    actionResult
+  }
 }

@@ -13,24 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package nl.knaw.dans.lib.logging.servlet
+package nl.knaw.dans.lib.logging
 
-import com.typesafe.scalalogging.LazyLogging
-import org.scalatra.{ ActionResult, ScalatraBase }
+import nl.knaw.dans.lib.logging.servlet._
+import org.scalatra.{ Created, ScalatraServlet }
 
-trait AbstractResponseLogger {
-  this: ScalatraBase with ResponseLogFormatter =>
+object TestServlet extends ScalatraServlet
+  with ServletLogger
+  with MaskedLogFormatter
+  with DebugEnhancedLogging {
 
-  implicit val responseLogger: AbstractResponseLogger = this
-
-  def logResponse(actionResult: ActionResult): ActionResult
-}
-
-trait ResponseLogger extends AbstractResponseLogger with ResponseLogFormatter {
-  this: ScalatraBase with LazyLogging =>
-
-  override def logResponse(actionResult: ActionResult): ActionResult = {
-    logger.info(formatResponseLog(actionResult))
-    actionResult
-  }
+  Created("hello").logResponse
 }

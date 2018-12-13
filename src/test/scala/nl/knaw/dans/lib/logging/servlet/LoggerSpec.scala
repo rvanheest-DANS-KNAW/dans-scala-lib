@@ -24,7 +24,7 @@ import org.scalatra.{ ActionResult, Ok, ScalatraBase, ScalatraServlet }
 class LoggerSpec extends FlatSpec with Matchers with ServletFixture with ScalatraSuite {
 
   private class TestServlet() extends ScalatraServlet {
-    this: AbstractResponseLogger =>
+    this: AbstractServletLogger =>
 
     get("/") {
       contentType = "text/plain"
@@ -33,8 +33,7 @@ class LoggerSpec extends FlatSpec with Matchers with ServletFixture with Scalatr
   }
   val stringBuilder = new StringBuilder
 
-  trait TestLoggers extends AbstractResponseLogger
-    with AbstractRequestLogger
+  trait TestLoggers extends AbstractServletLogger
     with ResponseLogFormatter
     with RequestLogFormatter {
     this: ScalatraBase =>
