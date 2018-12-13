@@ -1,14 +1,15 @@
 package nl.knaw.dans.lib.logging.servlet
 
 import javax.servlet.http.{ HttpServletRequest, HttpServletResponse }
+import nl.knaw.dans.lib.fixtures.TestServletFixture
 import nl.knaw.dans.lib.logging.servlet.masked.response.MaskedResponseLogFormatter
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.{ FlatSpec, Matchers }
-import org.scalatra.{ ActionResult, Ok, ScalatraServlet }
+import org.scalatra.Ok
 
 import scala.collection.JavaConverters._
 
-class ResponseLogFormatterSpec extends FlatSpec with Matchers with MockFactory {
+class ResponseLogFormatterSpec extends FlatSpec with Matchers with MockFactory with TestServletFixture {
 
   private val mockHeaders: HeaderMap = Map(
     "Set-Cookie" -> Seq("scentry.auth.default.user=abc456.pq.xy"),
@@ -16,8 +17,14 @@ class ResponseLogFormatterSpec extends FlatSpec with Matchers with MockFactory {
     "Expires" -> Seq("Thu, 01 Jan 1970 00:00:00 GMT"), // a date in the past means no cache for the returned content
   )
 
-  private def mockResponse: HttpServletResponse = {
-    val response = mock[HttpServletResponse]
+  override protected def mockRequest: HttpServletRequest = {
+    val req = super.mockRequest
+    (() => req.getMethod) expects() returning "GET" anyNumberOfTimes()
+    req
+  }
+
+  override protected def mockResponse: HttpServletResponse = {
+    val response = super.mockResponse
     val headers = mockHeaders
 
     headers.foreach { case (key: String, values: Seq[String]) =>
@@ -25,19 +32,6 @@ class ResponseLogFormatterSpec extends FlatSpec with Matchers with MockFactory {
     }
     (() => response.getHeaderNames) expects() anyNumberOfTimes() returning headers.keys.toSeq.asJava
     response
-  }
-
-  private def mockRequest: HttpServletRequest = {
-    val req = mock[HttpServletRequest]
-    (() => req.getMethod) expects() returning "GET" anyNumberOfTimes()
-    req
-  }
-
-  private class TestServlet(implicit override val request: HttpServletRequest = mockRequest,
-                            override val response: HttpServletResponse = mockResponse
-                           ) extends ScalatraServlet with ResponseLogFormatter {
-
-    def formatResponseLog(actionResult: ActionResult): String = super.formatResponseLog(actionResult)
   }
 
   "formatResponseLog" should "return a formatted log String for the response" in {

@@ -3,8 +3,8 @@ package nl.knaw.dans.lib.logging.servlet
 import nl.knaw.dans.lib.fixtures.ServletFixture
 import nl.knaw.dans.lib.logging.servlet.masked.request.MaskedRemoteAddress
 import org.scalatest.{ FlatSpec, Matchers }
-import org.scalatra.{ ActionResult, Ok, ScalatraBase, ScalatraServlet }
 import org.scalatra.test.scalatest.ScalatraSuite
+import org.scalatra.{ ActionResult, Ok, ScalatraBase, ScalatraServlet }
 
 class LoggerSpec extends FlatSpec with Matchers with ServletFixture with ScalatraSuite {
 
@@ -18,53 +18,36 @@ class LoggerSpec extends FlatSpec with Matchers with ServletFixture with Scalatr
   }
   val stringBuilder = new StringBuilder
 
-  trait TestResponseLogger extends AbstractResponseLogger {
-    this: ScalatraBase with ResponseLogFormatter =>
+  trait TestLoggers extends AbstractResponseLogger
+    with AbstractRequestLogger
+    with ResponseLogFormatter
+    with RequestLogFormatter {
+    this: ScalatraBase =>
 
     override def logResponse(actionResult: ActionResult): ActionResult = {
       stringBuilder append formatResponseLog(actionResult) append "\n"
       actionResult
     }
-  }
-
-  trait TestRequestLogger extends AbstractRequestLogger {
-    this: ScalatraBase with RequestLogFormatter =>
 
     override def logRequest(): Unit = stringBuilder append formatRequestLog append "\n"
   }
 
-  trait TestLoggers extends TestResponseLogger with TestRequestLogger {
-    this: ScalatraBase with ResponseLogFormatter with RequestLogFormatter =>
-  }
-
   "separate custom loggers" should "override default loggers" in {
-
-    class MyServlet() extends TestServlet
-      with TestResponseLogger with TestRequestLogger
-      with ResponseLogFormatter with RequestLogFormatter {}
+    class MyServlet() extends TestServlet with TestLoggers {}
     addServlet(new MyServlet(), "/*")
 
     shouldDivertLogging()
   }
 
   "combined custom loggers" should "override default loggers" in {
-
-    class MyServlet() extends TestServlet
-      with TestLoggers
-      with ResponseLogFormatter
-      with RequestLogFormatter {}
+    class MyServlet() extends TestServlet with TestLoggers {}
     addServlet(new MyServlet(), "/*")
 
     shouldDivertLogging()
   }
 
   "custom request formatter" should "alter logged content" in {
-
-    class MyServlet() extends TestServlet
-      with TestLoggers
-      with ResponseLogFormatter
-      with RequestLogFormatter
-      with MaskedRemoteAddress {}
+    class MyServlet() extends TestServlet with TestLoggers with MaskedRemoteAddress {}
     addServlet(new MyServlet(), "/*")
 
     shouldDivertLogging(formattedRemote = "**.**.**.1")

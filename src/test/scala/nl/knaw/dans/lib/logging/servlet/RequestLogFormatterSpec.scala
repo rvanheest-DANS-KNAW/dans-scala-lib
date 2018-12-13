@@ -1,16 +1,17 @@
 package nl.knaw.dans.lib.logging.servlet
 
 import javax.servlet.http.HttpServletRequest
+import nl.knaw.dans.lib.fixtures.TestServletFixture
 import nl.knaw.dans.lib.logging.servlet.masked.request.MaskedRequestLogFormatter
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.{ FlatSpec, Matchers }
-import org.scalatra.{ MultiParams, ScalatraServlet }
+import org.scalatra.MultiParams
 
 import scala.collection.JavaConverters._
 
-class RequestLogFormatterSpec extends FlatSpec with Matchers with MockFactory {
+class RequestLogFormatterSpec extends FlatSpec with Matchers with MockFactory with TestServletFixture {
 
-  private val mockParams: MultiParams = Map(
+  override protected val mockParams: MultiParams = Map(
     "password" -> Seq("secret"),
     "login" -> Seq("mystery"),
   )
@@ -21,8 +22,8 @@ class RequestLogFormatterSpec extends FlatSpec with Matchers with MockFactory {
     "foo" -> Seq("bar"),
   )
 
-  private def mockRequest: HttpServletRequest = {
-    val request = mock[HttpServletRequest]
+  override protected def mockRequest: HttpServletRequest = {
+    val request = super.mockRequest
     val headers = mockHeaders
 
     for ((key, values) <- headers) {
@@ -35,14 +36,6 @@ class RequestLogFormatterSpec extends FlatSpec with Matchers with MockFactory {
     (() => request.getHeaderNames) expects() anyNumberOfTimes() returning headers.keys.iterator.asJavaEnumeration
 
     request
-  }
-
-  private class TestServlet(params: MultiParams = mockParams,
-                            override val request: HttpServletRequest = mockRequest,
-                           ) extends ScalatraServlet with RequestLogFormatter {
-    override def multiParams(implicit request: HttpServletRequest): MultiParams = params
-
-    override def formatRequestLog: String = super.formatRequestLog
   }
 
   "formatRequestLog" should "return a formatted log String for the request" in {
