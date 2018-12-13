@@ -13,13 +13,11 @@ trait ResponseLogFormatter {
                                   response: HttpServletResponse): String = {
     val method = request.getMethod
     val status = actionResult.status
-    val formattedAuthHeaders = responseHeadersToString(formatResponseHeaders(getHeaderMap(response)))
-    val formattedActionHeaders = actionHeadersToString(actionResult)
+    val formattedAuthHeaders = formatResponseHeaders(getHeaderMap(response)).makeString
+    val formattedActionHeaders = formatActionHeaders(actionResult).makeString
 
     s"$method returned status=$status; authHeaders=$formattedAuthHeaders; actionHeaders=$formattedActionHeaders"
   }
-
-  protected def responseHeadersToString(headers: HeaderMap): String = headers.makeString
 
   protected def formatResponseHeaders(headers: HeaderMap): HeaderMap = headers.map(formatResponseHeader)
 
@@ -29,10 +27,6 @@ trait ResponseLogFormatter {
     response.getHeaderNames.asScala.toSeq
       .map(name => name -> Option(response.getHeaders(name)).fold(Seq[String]())(_.asScala.toSeq))
       .toMap
-  }
-
-  protected def actionHeadersToString(actionResult: ActionResult): String = {
-    formatActionHeaders(actionResult).makeString
   }
 
   protected def formatActionHeaders(actionResult: ActionResult): Map[String, String] = {

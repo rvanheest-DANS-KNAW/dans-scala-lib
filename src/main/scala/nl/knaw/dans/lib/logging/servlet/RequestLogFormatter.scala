@@ -26,15 +26,13 @@ trait RequestLogFormatter {
   protected def formatRequestLog: String = {
     val method = request.getMethod
     val requestURL = request.getRequestURL.toString
-    val formattedHeaders = headersToString(formatHeaders(getHeaderMap(request)))
-    val formattedParams = parametersToString(formatParameters(multiParams))
+    val formattedHeaders = formatHeaders(getHeaderMap(request)).makeString
+    val formattedParams = formatParameters(multiParams).makeString
     val formattedRemoteAddress = formatRemoteAddress(Option(request.getRemoteAddr).getOrElse(""))
 
     // TODO perhaps more of https://github.com/scalatra/scalatra/blob/2.7.x/core/src/main/scala/org/scalatra/util/RequestLogging.scala#L70-L85
     s"$method $requestURL remote=$formattedRemoteAddress; params=$formattedParams; headers=$formattedHeaders"
   }
-
-  protected def headersToString(headers: HeaderMap): String = headers.makeString
 
   protected def formatHeaders(headers: HeaderMap): HeaderMap = headers.map(formatHeader)
 
@@ -46,8 +44,6 @@ trait RequestLogFormatter {
       .map(name => name -> Option(request.getHeaders(name)).fold(Seq[String]())(_.asScala.toSeq))
       .toMap
   }
-
-  protected def parametersToString(params: MultiParams): String = params.makeString
 
   protected def formatParameters(params: MultiParams): MultiParams = params.map(formatParameter)
 
