@@ -27,7 +27,7 @@ package object servlet {
   implicit private[servlet] class MapExtensions[K, V](val stringMap: Map[K, V]) extends AnyVal {
 
     /** @return a toString like value with less class names */
-    def makeString: String = {
+    private[servlet] def makeString: String = {
       stringMap.map {
         case (k, v: Seq[_]) => k -> v.mkString("[", ", ", "]")
         case kv => kv
@@ -43,6 +43,5 @@ package object servlet {
     }
   }
 
-  type MaskedRequestLogger = masked.request.MaskedRequestLogger
-  type MaskedResponseLogger = masked.response.MaskedResponseLogger
+  type MaskedLogFormatter = masked.MaskedLogFormatter
 }
