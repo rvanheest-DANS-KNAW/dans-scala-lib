@@ -18,7 +18,7 @@ package nl.knaw.dans.lib.logging.servlet.masked.request
 import nl.knaw.dans.lib.logging.servlet.{ MultiParamsEntry, RequestLogFormatter }
 import org.scalatra.ScalatraBase
 
-trait MaskedAuthenticationParameters extends RequestLogFormatter {
+private[masked] trait MaskedAuthenticationParameters extends RequestLogFormatter {
   this: ScalatraBase =>
 
   abstract override protected def formatParameter(param: MultiParamsEntry): MultiParamsEntry = {

@@ -18,7 +18,7 @@ package nl.knaw.dans.lib.logging.servlet.masked.response
 import nl.knaw.dans.lib.logging.servlet.{ HeaderMapEntry, ResponseLogFormatter }
 import org.scalatra.ScalatraBase
 
-trait MaskedSetCookie extends ResponseLogFormatter {
+private[masked] trait MaskedSetCookie extends ResponseLogFormatter {
   this: ScalatraBase =>
 
   abstract override def formatResponseHeader(entry: HeaderMapEntry): HeaderMapEntry = {

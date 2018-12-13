@@ -16,11 +16,21 @@
 package nl.knaw.dans.lib.logging
 
 import nl.knaw.dans.lib.logging.servlet._
+import nl.knaw.dans.lib.logging.servlet.masked._
 import org.scalatra.{ Created, ScalatraServlet }
 
 object TestServlet extends ScalatraServlet
   with ServletLogger
   with MaskedLogFormatter
+  with DebugEnhancedLogging {
+
+  Created("hello").logResponse
+}
+
+object TestServlet2 extends ScalatraServlet
+  with ServletLogger
+  with MaskedRemoteUser
+  with MaskedCookie
   with DebugEnhancedLogging {
 
   Created("hello").logResponse

@@ -18,7 +18,7 @@ package nl.knaw.dans.lib.logging.servlet.masked.request
 import nl.knaw.dans.lib.logging.servlet.{ HeaderMapEntry, RequestLogFormatter }
 import org.scalatra.ScalatraBase
 
-trait MaskedAuthorizationHeader extends RequestLogFormatter {
+private[masked] trait MaskedAuthorizationHeader extends RequestLogFormatter {
   this: ScalatraBase =>
 
   abstract override protected def formatHeader(entry: HeaderMapEntry): HeaderMapEntry = {

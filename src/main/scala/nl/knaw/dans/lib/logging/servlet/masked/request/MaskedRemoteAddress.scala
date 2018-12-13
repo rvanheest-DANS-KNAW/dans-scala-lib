@@ -18,7 +18,7 @@ package nl.knaw.dans.lib.logging.servlet.masked.request
 import nl.knaw.dans.lib.logging.servlet.RequestLogFormatter
 import org.scalatra.ScalatraBase
 
-trait MaskedRemoteAddress extends RequestLogFormatter {
+private[masked] trait MaskedRemoteAddress extends RequestLogFormatter {
   this: ScalatraBase =>
 
   /**

@@ -17,7 +17,7 @@ package nl.knaw.dans.lib.logging.servlet
 
 import javax.servlet.http.{ HttpServletRequest, HttpServletResponse }
 import nl.knaw.dans.lib.fixtures.TestServletFixture
-import nl.knaw.dans.lib.logging.servlet.masked.response.MaskedResponseLogFormatter
+import nl.knaw.dans.lib.logging.servlet.masked.MaskedResponseLogFormatter
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.{ FlatSpec, Matchers }
 import org.scalatra.Ok

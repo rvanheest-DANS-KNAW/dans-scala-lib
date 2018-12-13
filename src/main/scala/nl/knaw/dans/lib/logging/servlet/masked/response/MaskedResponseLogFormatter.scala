@@ -17,6 +17,6 @@ package nl.knaw.dans.lib.logging.servlet.masked.response
 
 import org.scalatra.ScalatraBase
 
-trait MaskedResponseLogFormatter extends MaskedRemoteUser with MaskedSetCookie {
+private[masked] trait MaskedResponseLogFormatter extends MaskedRemoteUser with MaskedSetCookie {
   this: ScalatraBase =>
 }

@@ -16,7 +16,7 @@
 package nl.knaw.dans.lib.logging.servlet
 
 import nl.knaw.dans.lib.fixtures.ServletFixture
-import nl.knaw.dans.lib.logging.servlet.masked.request.MaskedRemoteAddress
+import nl.knaw.dans.lib.logging.servlet.masked.MaskedRemoteAddress
 import org.scalatest.{ FlatSpec, Matchers }
 import org.scalatra.test.scalatest.ScalatraSuite
 import org.scalatra.{ ActionResult, Ok, ScalatraBase, ScalatraServlet }

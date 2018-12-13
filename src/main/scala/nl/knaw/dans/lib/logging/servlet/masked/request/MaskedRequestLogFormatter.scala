@@ -17,7 +17,7 @@ package nl.knaw.dans.lib.logging.servlet.masked.request
 
 import org.scalatra.ScalatraBase
 
-trait MaskedRequestLogFormatter extends MaskedCookie
+private[masked] trait MaskedRequestLogFormatter extends MaskedCookie
   with MaskedAuthorizationHeader
   with MaskedAuthenticationParameters
   with MaskedRemoteAddress {
