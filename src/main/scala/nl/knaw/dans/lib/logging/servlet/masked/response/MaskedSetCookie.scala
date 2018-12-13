@@ -1,13 +1,13 @@
 package nl.knaw.dans.lib.logging.servlet.masked.response
 
+import nl.knaw.dans.lib.logging.servlet.{ HeaderMapEntry, ResponseLogFormatter }
 import org.scalatra.ScalatraBase
 
-trait MaskedSetCookieFormatter extends MaskedResponseHeaders {
+trait MaskedSetCookie extends ResponseLogFormatter {
   this: ScalatraBase =>
 
-  abstract override def formatResponseHeader(headerName: String,
-                                             headerValues: Seq[String]): (String, Seq[String]) = {
-    super.formatResponseHeader(headerName, headerValues) match {
+  abstract override def formatResponseHeader(entry: HeaderMapEntry): HeaderMapEntry = {
+    super.formatResponseHeader(entry) match {
       case (name, values) if name.toLowerCase == "set-cookie" =>
         name -> values.map(formatCookieValue)
       case otherwise => otherwise

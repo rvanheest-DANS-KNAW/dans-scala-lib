@@ -4,7 +4,7 @@ import nl.knaw.dans.lib.logging.servlet.ResponseLogFormatter
 import org.scalatra.ScalatraBase
 
 trait MaskedResponseLogFormatter extends ResponseLogFormatter
-  with MaskedRemoteUserFormatter
-  with MaskedSetCookieFormatter {
+  with MaskedRemoteUser
+  with MaskedSetCookie {
   this: ScalatraBase =>
 }

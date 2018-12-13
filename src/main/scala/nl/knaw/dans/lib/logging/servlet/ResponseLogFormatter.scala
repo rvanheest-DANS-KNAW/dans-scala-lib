@@ -8,8 +8,9 @@ import scala.collection.JavaConverters._
 trait ResponseLogFormatter {
   this: ScalatraBase =>
 
-  protected def formatResponseLog(actionResult: ActionResult)(implicit request: HttpServletRequest,
-                                                    response: HttpServletResponse): String = {
+  protected def formatResponseLog(actionResult: ActionResult)
+                                 (implicit request: HttpServletRequest,
+                                  response: HttpServletResponse): String = {
     val method = request.getMethod
     val status = actionResult.status
     val formattedAuthHeaders = responseHeadersToString(formatResponseHeaders(getHeaderMap(response)))
@@ -20,7 +21,9 @@ trait ResponseLogFormatter {
 
   protected def responseHeadersToString(headers: HeaderMap): String = headers.makeString
 
-  protected def formatResponseHeaders(headers: HeaderMap): HeaderMap = headers
+  protected def formatResponseHeaders(headers: HeaderMap): HeaderMap = headers.map(formatResponseHeader)
+
+  protected def formatResponseHeader(entry: HeaderMapEntry): HeaderMapEntry = entry
 
   private def getHeaderMap(response: HttpServletResponse): HeaderMap = {
     response.getHeaderNames.asScala.toSeq

@@ -1,13 +1,13 @@
 package nl.knaw.dans.lib.logging.servlet.masked.response
 
+import nl.knaw.dans.lib.logging.servlet.{ HeaderMapEntry, ResponseLogFormatter }
 import org.scalatra.ScalatraBase
 
-trait MaskedRemoteUserFormatter extends MaskedResponseHeaders {
+trait MaskedRemoteUser extends ResponseLogFormatter {
   this: ScalatraBase =>
 
-  abstract override def formatResponseHeader(headerName: String,
-                                             headerValues: Seq[String]): (String, Seq[String]) = {
-    super.formatResponseHeader(headerName, headerValues) match {
+  abstract override def formatResponseHeader(entry: HeaderMapEntry): HeaderMapEntry = {
+    super.formatResponseHeader(entry) match {
       case (name, values) if name.toLowerCase == "remote_user" =>
         name -> values.map(formatRemoteUserValue)
       case otherwise => otherwise

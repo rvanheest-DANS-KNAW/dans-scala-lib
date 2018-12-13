@@ -4,6 +4,6 @@ import com.typesafe.scalalogging.LazyLogging
 import nl.knaw.dans.lib.logging.servlet.ResponseLogger
 import org.scalatra.ScalatraBase
 
-trait MaskedResponseLogger extends ResponseLogger with MaskedRemoteUserFormatter with MaskedSetCookieFormatter {
+trait MaskedResponseLogger extends ResponseLogger with MaskedResponseLogFormatter {
   this: ScalatraBase with LazyLogging =>
 }
