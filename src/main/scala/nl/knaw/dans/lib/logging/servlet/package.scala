@@ -15,7 +15,6 @@
  */
 package nl.knaw.dans.lib.logging
 
-import javax.servlet.http.{ HttpServletRequest, HttpServletResponse }
 import org.scalatra.ActionResult
 
 package object servlet {
@@ -29,17 +28,46 @@ package object servlet {
 
     /** @return a toString like value with less class names */
     private[servlet] def makeString: String = {
+      def formatSeq[T](seq: Seq[T]): String = {
+        seq.map {
+          case t: Seq[_] => formatSeq(t)
+          case t => t
+        }.mkString("[", ", ", "]")
+      }
+
       stringMap.map {
-        case (k, v: Seq[_]) => k -> v.mkString("[", ", ", "]")
+        case (k, v: Seq[_]) => k -> formatSeq(v)
+        case (k, v: Map[_, _]) => k -> v.makeString
         case kv => kv
       }.mkString("[", ", ", "]")
     }
   }
 
+  /**
+   * Convenience syntax for logging a response.
+   *
+   * @param actionResult the `ActionResult to be logged`
+   */
   implicit class LogResponseSyntax(val actionResult: ActionResult) extends AnyVal {
-    def logResponse(implicit request: HttpServletRequest,
-                    response: HttpServletResponse,
-                    responseLogger: AbstractServletLogger): ActionResult = {
+    /**
+     * Performs the side effect of the logging of the response, contained in the given `ActionResult`.\
+     *
+     * @example
+     * {{{
+     *   import nl.knaw.dans.lib.logging.DebugEnhancedLogging
+     *   import nl.knaw.dans.lib.logging.servlet._
+     *   import org.scalatra.{ Ok, ScalatraServlet }
+     *
+     *   class ExampleServlet extends ScalatraServlet with ServletLogger with DebugEnhancedLogging {
+     *     get("/") {
+     *       Ok("All is well").logResponse
+     *     }
+     *   }
+     * }}}
+     * @param responseLogger the logger with which to format/output the response
+     * @return the original `ActionResult`
+     */
+    def logResponse(implicit responseLogger: AbstractServletLogger): ActionResult = {
       responseLogger.logResponse(actionResult)
     }
   }

@@ -41,6 +41,7 @@ trait AbstractServletLogger {
    * @example
    * {{{
    *   import nl.knaw.dans.lib.logging.DebugEnhancedLogging
+   *   import nl.knaw.dans.lib.logging.servlet._
    *   import org.scalatra.{ Ok, ScalatraServlet }
    *
    *   class ExampleServlet extends ScalatraServlet with ServletLogger with DebugEnhancedLogging {
@@ -63,6 +64,7 @@ trait AbstractServletLogger {
    * }}}
    * @param actionResult the `ActionResult to be logged`
    * @return the original `ActionResult`
+   * @see LogResponseSyntax
    */
   def logResponse(actionResult: ActionResult): ActionResult
 }
