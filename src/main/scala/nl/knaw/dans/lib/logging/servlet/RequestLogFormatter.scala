@@ -23,6 +23,11 @@ import scala.collection.JavaConverters._
 trait RequestLogFormatter {
   this: ScalatraBase =>
 
+  /**
+   * Constructs the `String` to be logged by `ServletLogger` about this request.
+   *
+   * @return the `String` to be logged
+   */
   protected def formatRequestLog: String = {
     val method = request.getMethod
     val requestURL = request.getRequestURL.toString
@@ -34,8 +39,29 @@ trait RequestLogFormatter {
     s"$method $requestURL remote=$formattedRemoteAddress; params=$formattedParams; headers=$formattedHeaders"
   }
 
+  /**
+   * Maps over all headers in this request and performs formatting (masking, prettyprinting, etc.)
+   * for each of them. It returns a new `HeaderMap` with the same keys and the formatted values.
+   *
+   * Note that this does not change the formatting of the headers in the actual request.
+   *
+   * @param headers the headers to be formatted
+   * @return a mapping of the headers' keys to their formatted values
+   */
   protected def formatHeaders(headers: HeaderMap): HeaderMap = headers.map(formatHeader)
 
+  /**
+   * Formats (masking, prettyprinting, etc.) the given header's value for logging purposes.
+   * By default it leaves the header untouched, but other implementations may provide other
+   * formattings.
+   *
+   * Note that this does not change the content of the specific header in the actual request.
+   *
+   * @param header the header to be formatted
+   * @return the formatted header
+   * @see MaskedAuthorizationHeader
+   * @see MaskedCookie
+   */
   protected def formatHeader(header: HeaderMapEntry): HeaderMapEntry = header
 
   private def getHeaderMap(request: HttpServletRequest): HeaderMap = {
@@ -45,9 +71,40 @@ trait RequestLogFormatter {
       .toMap
   }
 
+  /**
+   * Maps over all parameters in this request and performs formatting (masking, prettyprinting, etc.)
+   * for each of them. It returns a new `MultiParams` with the same keys and the formatted values.
+   *
+   * Note that this does not change the content of the parameters in the actual request.
+   *
+   * @param params the parameters to be formatted
+   * @return a mapping of the parameters' keys to their formatted values
+   */
   protected def formatParameters(params: MultiParams): MultiParams = params.map(formatParameter)
 
+  /**
+   * Formats (masking, prettyprinting, etc.) the given parameter's value for logging purposes.
+   * By default it leaves the parameter untouched, but other implementations may provide other
+   * formattings.
+   *
+   * Note that this does not change the content of the specific parameter in the actual request.
+   *
+   * @param param the parameter to be formatted
+   * @return the formatted parameter
+   * @see MaskedAuthenticationParameters
+   */
   protected def formatParameter(param: MultiParamsEntry): MultiParamsEntry = param
 
+  /**
+   * Formats (masking, prettyprinting, etc.) the request's remote address for logging purposes.
+   * By default it leaves the address untouched, but other implementations may provide other
+   * formattings.
+   *
+   * Note that this does not change the remote address in the actual request.
+   *
+   * @param remoteAddress the remote address to be formatted
+   * @return the formatted remote address
+   * @see MaskedRemoteAddress
+   */
   protected def formatRemoteAddress(remoteAddress: String): String = remoteAddress
 }

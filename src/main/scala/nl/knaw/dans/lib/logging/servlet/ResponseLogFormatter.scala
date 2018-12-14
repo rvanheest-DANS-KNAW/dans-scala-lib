@@ -46,19 +46,19 @@ trait ResponseLogFormatter {
    * Maps over all headers in this response and performs formatting (masking, prettyprinting, etc.)
    * for each of them. It returns a new `HeaderMap` with the same keys and the formatted values.
    *
-   * Note that this does not change the formatting of the headers in the actual response.
+   * Note that this does not change the content of the headers in the actual response.
    *
    * @param headers the headers to be formatted
-   * @return a `Map` of formatted headers
+   * @return a mapping of the headers' keys to their formatted values
    */
   protected def formatResponseHeaders(headers: HeaderMap): HeaderMap = headers.map(formatResponseHeader)
 
   /**
    * Formats (masking, prettyprinting, etc.) the given header's value for logging purposes.
-   * By default it leaves the header as-is, but other implementations provide various other
-   * possibilities.
+   * By default it leaves the header untouched, but other implementations may provide other
+   * formattings.
    *
-   * Note that this does not change the formatting of the specific header in the actual response.
+   * Note that this does not change the content of the specific header in the actual response.
    *
    * @param header the header to be formatted
    * @return the formatted header
@@ -76,7 +76,7 @@ trait ResponseLogFormatter {
   /**
    * Formats (masking, prettyprinting, etc.) the headers from an `ActionResult`.
    *
-   * Note that this method does not change the formatting of the headers in the actual response.
+   * Note that this method does not change the content of the headers in the actual response.
    *
    * @param actionHeaders the actionHeaders to be formatted
    * @return the formatted actionHeaders
