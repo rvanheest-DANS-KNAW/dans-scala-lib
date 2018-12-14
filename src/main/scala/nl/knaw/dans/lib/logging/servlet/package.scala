@@ -17,6 +17,36 @@ package nl.knaw.dans.lib.logging
 
 import org.scalatra.ActionResult
 
+/**
+ * Package for logging servlet requests and responses.
+ *
+ * To enable servlet logging, add the `ServletLogger` trait to servlet definition, together with
+ * an implementation of a `com.typesafe.scalalogging.Logger`. In the example below we use
+ * `DebugEnhancedLogging` for the latter.
+ *
+ * When the request/response contain privacy sensitive data, a `MaskedLogFormatter` might be added
+ * as well in order mask things like authorization headers, cookies, remote addresses and
+ * authentication parameters.
+ *
+ * @example
+ * {{{
+ *    import nl.knaw.dans.lib.logging.DebugEnhancedLogging
+ *    import nl.knaw.dans.lib.logging.servlet._
+ *    import org.scalatra.{ Ok, ScalatraServlet }
+ *
+ *    class ExampleServlet extends ScalatraServlet with ServletLogger with DebugEnhancedLogging {
+ *      get("/") {
+ *        Ok("All is well").logResponse
+ *      }
+ *    }
+ *
+ *    class MaskedServlet extends ScalatraServlet with ServletLogger with MaskedLogFormatter with DebugEnhancedLogging {
+ *      get("/") {
+ *        Ok("All is well").logResponse
+ *      }
+ *    }
+ * }}}
+ */
 package object servlet {
 
   type HeaderMap = Map[String, Seq[String]]

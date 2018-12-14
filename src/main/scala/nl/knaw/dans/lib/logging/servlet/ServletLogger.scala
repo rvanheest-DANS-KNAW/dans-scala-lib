@@ -15,7 +15,7 @@
  */
 package nl.knaw.dans.lib.logging.servlet
 
-import com.typesafe.scalalogging.LazyLogging
+import com.typesafe.scalalogging.{ LazyLogging, Logger }
 import org.scalatra.{ ActionResult, ScalatraBase }
 
 trait AbstractServletLogger {
@@ -72,7 +72,9 @@ trait AbstractServletLogger {
 }
 
 trait ServletLogger extends AbstractServletLogger with RequestLogFormatter with ResponseLogFormatter {
-  this: ScalatraBase with LazyLogging =>
+  this: ScalatraBase =>
+
+  protected val logger: Logger
 
   /**
    * @inheritdoc
