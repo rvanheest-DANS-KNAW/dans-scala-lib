@@ -21,6 +21,9 @@ import org.scalatra.{ ActionResult, ScalatraBase }
 trait AbstractServletLogger {
   this: ScalatraBase =>
 
+  /**
+   * This instance of the `AbstractServletLogger` in implicit scope.
+   */
   implicit val responseLogger: AbstractServletLogger = this
 
   before() {
@@ -71,8 +74,14 @@ trait AbstractServletLogger {
 trait ServletLogger extends AbstractServletLogger with RequestLogFormatter with ResponseLogFormatter {
   this: ScalatraBase with LazyLogging =>
 
+  /**
+   * @inheritdoc
+   */
   override def logRequest(): Unit = logger.info(formatRequestLog)
 
+  /**
+   * @inheritdoc
+   */
   override def logResponse(actionResult: ActionResult): ActionResult = {
     logger.info(formatResponseLog(actionResult))
     actionResult
