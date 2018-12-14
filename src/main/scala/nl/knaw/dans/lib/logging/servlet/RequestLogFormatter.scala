@@ -59,8 +59,6 @@ trait RequestLogFormatter {
    *
    * @param header the header to be formatted
    * @return the formatted header
-   * @see MaskedAuthorizationHeader
-   * @see MaskedCookie
    */
   protected def formatHeader(header: HeaderMapEntry): HeaderMapEntry = header
 
@@ -91,7 +89,6 @@ trait RequestLogFormatter {
    *
    * @param param the parameter to be formatted
    * @return the formatted parameter
-   * @see MaskedAuthenticationParameters
    */
   protected def formatParameter(param: MultiParamsEntry): MultiParamsEntry = param
 
@@ -104,7 +101,6 @@ trait RequestLogFormatter {
    *
    * @param remoteAddress the remote address to be formatted
    * @return the formatted remote address
-   * @see MaskedRemoteAddress
    */
   protected def formatRemoteAddress(remoteAddress: String): String = remoteAddress
 }

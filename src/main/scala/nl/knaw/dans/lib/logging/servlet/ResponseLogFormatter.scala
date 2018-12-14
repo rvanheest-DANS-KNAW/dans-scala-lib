@@ -62,8 +62,6 @@ trait ResponseLogFormatter {
    *
    * @param header the header to be formatted
    * @return the formatted header
-   * @see MaskedSetCookie
-   * @see MaskedRemoteUser
    */
   protected def formatResponseHeader(header: HeaderMapEntry): HeaderMapEntry = header
 

@@ -64,7 +64,6 @@ trait AbstractServletLogger {
    * }}}
    * @param actionResult the `ActionResult to be logged`
    * @return the original `ActionResult`
-   * @see LogResponseSyntax
    */
   def logResponse(actionResult: ActionResult): ActionResult
 }
