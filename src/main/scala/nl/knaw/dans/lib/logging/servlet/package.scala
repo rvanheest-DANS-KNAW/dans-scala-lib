@@ -52,6 +52,7 @@ package object servlet {
   type HeaderMap = Map[String, Seq[String]]
   type HeaderMapEntry = (String, Seq[String])
   type ActionHeadersMap = Map[String, String]
+  type ActionHeaderEntry = (String, String)
   type MultiParamsEntry = (String, Seq[String])
 
   implicit private[servlet] class MapExtensions[K, V](val stringMap: Map[K, V]) extends AnyVal {

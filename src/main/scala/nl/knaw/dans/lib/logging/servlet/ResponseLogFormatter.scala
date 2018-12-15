@@ -79,5 +79,17 @@ trait ResponseLogFormatter {
    * @param actionHeaders the actionHeaders to be formatted
    * @return the formatted actionHeaders
    */
-  protected def formatActionHeaders(actionHeaders: ActionHeadersMap): ActionHeadersMap = actionHeaders
+  protected def formatActionHeaders(actionHeaders: ActionHeadersMap): ActionHeadersMap = actionHeaders.map(formatActionHeader)
+
+  /**
+   * Formats (masking, prettyprinting, etc.) the given header's value for logging purposes.
+   * By default it leaves the header untouched, but other implementations may provide other
+   * formattings.
+   *
+   * Note that this does not change the content of the specific header in the actual response.
+   *
+   * @param header the header to be formatted
+   * @return the formatted header
+   */
+  protected def formatActionHeader(header: ActionHeaderEntry): ActionHeaderEntry = header
 }
