@@ -48,7 +48,9 @@ trait RequestLogFormatter {
    * @param headers the headers to be formatted
    * @return a mapping of the headers' keys to their formatted values
    */
-  protected def formatHeaders(headers: HeaderMap): HeaderMap = headers.map(formatHeader)
+  protected def formatHeaders(headers: HeaderMap): HeaderMap = {
+    headers.map(formatHeader)
+  }
 
   /**
    * Formats (masking, prettyprinting, etc.) the given header's value for logging purposes.
@@ -78,7 +80,9 @@ trait RequestLogFormatter {
    * @param params the parameters to be formatted
    * @return a mapping of the parameters' keys to their formatted values
    */
-  protected def formatParameters(params: MultiParams): MultiParams = params.map(formatParameter)
+  protected def formatParameters(params: MultiParams): MultiParams = {
+    params.map(formatParameter)
+  }
 
   /**
    * Formats (masking, prettyprinting, etc.) the given parameter's value for logging purposes.

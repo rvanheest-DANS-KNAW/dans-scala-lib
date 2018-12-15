@@ -51,7 +51,9 @@ trait ResponseLogFormatter {
    * @param headers the headers to be formatted
    * @return a mapping of the headers' keys to their formatted values
    */
-  protected def formatResponseHeaders(headers: HeaderMap): HeaderMap = headers.map(formatResponseHeader)
+  protected def formatResponseHeaders(headers: HeaderMap): HeaderMap = {
+    headers.map(formatResponseHeader)
+  }
 
   /**
    * Formats (masking, prettyprinting, etc.) the given header's value for logging purposes.
@@ -79,7 +81,9 @@ trait ResponseLogFormatter {
    * @param actionHeaders the actionHeaders to be formatted
    * @return the formatted actionHeaders
    */
-  protected def formatActionHeaders(actionHeaders: ActionHeadersMap): ActionHeadersMap = actionHeaders.map(formatActionHeader)
+  protected def formatActionHeaders(actionHeaders: ActionHeadersMap): ActionHeadersMap = {
+    actionHeaders.map(formatActionHeader)
+  }
 
   /**
    * Formats (masking, prettyprinting, etc.) the given header's value for logging purposes.
