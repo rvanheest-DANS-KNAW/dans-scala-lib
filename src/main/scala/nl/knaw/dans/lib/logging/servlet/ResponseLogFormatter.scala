@@ -27,13 +27,9 @@ trait ResponseLogFormatter {
    * Constructs the `String` to be logged by `ServletLogger` about this response.
    *
    * @param actionResult the ActionResult to be logged
-   * @param request      the original HTTP request object
-   * @param response     the HTTP response object
    * @return the `String` to be logged
    */
-  protected def formatResponseLog(actionResult: ActionResult)
-                                 (implicit request: HttpServletRequest,
-                                  response: HttpServletResponse): String = {
+  protected def formatResponseLog(actionResult: ActionResult): String = {
     val method = request.getMethod
     val status = actionResult.status
     val formattedAuthHeaders = formatResponseHeaders(getHeaderMap(response)).makeString
