@@ -36,6 +36,8 @@ trait RequestLogFormatter {
     val formattedRemoteAddress = formatRemoteAddress(Option(request.getRemoteAddr).getOrElse(""))
 
     // TODO perhaps more of https://github.com/scalatra/scalatra/blob/2.7.x/core/src/main/scala/org/scalatra/util/RequestLogging.scala#L70-L85
+    // review comment: See https://github.com/DANS-KNAW/easy-deposit-api/blob/4ccda27/src/main/scala/nl.knaw.dans.easy.deposit/logging/package.scala#L36
+    // please document somewhere why we don't use it, it was related with authorisation headers
     s"$method $requestURL remote=$formattedRemoteAddress; params=$formattedParams; headers=$formattedHeaders"
   }
 

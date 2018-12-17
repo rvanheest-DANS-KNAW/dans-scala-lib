@@ -15,7 +15,7 @@
  */
 package nl.knaw.dans.lib.logging.servlet
 
-import javax.servlet.http.{ HttpServletRequest, HttpServletResponse }
+import javax.servlet.http.HttpServletResponse
 import org.scalatra.{ ActionResult, ScalatraBase }
 
 import scala.collection.JavaConverters._
@@ -34,6 +34,9 @@ trait ResponseLogFormatter {
     val status = actionResult.status
     val formattedAuthHeaders = formatResponseHeaders(getHeaderMap(response)).makeString
     val formattedActionHeaders = formatActionHeaders(actionResult.headers).makeString
+    // review comment:
+    // somewhere I stumbled over the same header by the response headers and action headers
+    // don't remember or did not test what was actually sent to the client in those occasions
 
     s"$method returned status=$status; authHeaders=$formattedAuthHeaders; actionHeaders=$formattedActionHeaders"
   }
@@ -78,6 +81,9 @@ trait ResponseLogFormatter {
    * @return the formatted actionHeaders
    */
   protected def formatActionHeaders(actionHeaders: ActionHeadersMap): ActionHeadersMap = {
+    // Review comment: so far no headers encountered that contained sensitive data
+    // don't now if any common header may, or we will sooner or later might develop
+    // our own custom header with sensitive data, better safe than sorry with this hook
     actionHeaders.map(formatActionHeader)
   }
 

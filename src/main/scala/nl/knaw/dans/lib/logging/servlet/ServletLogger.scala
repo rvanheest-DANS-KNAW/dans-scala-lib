@@ -50,6 +50,10 @@ trait AbstractServletLogger {
    *   class ExampleServlet extends ScalatraServlet with ServletLogger with DebugEnhancedLogging {
    *     get("/") {
    *       logResponse(Ok("All is well"))
+   *       // TODO review comment:
+   *       // When reading this line the main action (create a response)
+   *       // drowns in the side effect (log the created response).
+   *       // Do you have a good use case for it?
    *     }
    *   }
    * }}}
