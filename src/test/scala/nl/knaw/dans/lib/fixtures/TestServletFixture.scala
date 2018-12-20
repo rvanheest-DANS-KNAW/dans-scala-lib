@@ -32,7 +32,7 @@ trait TestServletFixture {
 
     override def formatRequestLog: String = super.formatRequestLog
 
-    def formatResponseLog(actionResult: ActionResult): String = super.formatResponseLog(actionResult)
+    override def formatResponseLog(actionResult: ActionResult): String = super.formatResponseLog(actionResult)
   }
 
   protected val mockParams: MultiParams = Map()
