@@ -15,10 +15,10 @@
  */
 package nl.knaw.dans.lib.logging.servlet.masked.request
 
-import nl.knaw.dans.lib.logging.servlet.RequestLogFormatter
+import nl.knaw.dans.lib.logging.servlet.RequestLogExtensionBase
 import org.scalatra.ScalatraBase
 
-private[masked] trait MaskedRemoteAddress extends RequestLogFormatter {
+private[masked] trait MaskedRemoteAddress extends RequestLogExtensionBase {
   this: ScalatraBase =>
 
   /**

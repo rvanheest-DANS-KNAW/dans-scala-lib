@@ -43,26 +43,15 @@ trait RequestLogFormatter {
    * Maps over all headers in this request and performs formatting (masking, prettyprinting, etc.)
    * for each of them. It returns a new `HeaderMap` with the same keys and the formatted values.
    *
+   * By default it leaves the headers untouched, but other implementations may provide other
+   * formattings.
+   *
    * Note that this does not change the formatting of the headers in the actual request.
    *
    * @param headers the headers to be formatted
    * @return a mapping of the headers' keys to their formatted values
    */
-  protected def formatHeaders(headers: HeaderMap): HeaderMap = {
-    headers.map(formatHeader)
-  }
-
-  /**
-   * Formats (masking, prettyprinting, etc.) the given header's value for logging purposes.
-   * By default it leaves the header untouched, but other implementations may provide other
-   * formattings.
-   *
-   * Note that this does not change the content of the specific header in the actual request.
-   *
-   * @param header the header to be formatted
-   * @return the formatted header
-   */
-  protected def formatHeader(header: HeaderMapEntry): HeaderMapEntry = header
+  protected def formatHeaders(headers: HeaderMap): HeaderMap = headers
 
   private def getHeaderMap(request: HttpServletRequest): HeaderMap = {
     // looks the same method as for ResponseLogFormatter, but everywhere different classes
@@ -75,26 +64,15 @@ trait RequestLogFormatter {
    * Maps over all parameters in this request and performs formatting (masking, prettyprinting, etc.)
    * for each of them. It returns a new `MultiParams` with the same keys and the formatted values.
    *
+   * By default it leaves the parameters untouched, but other implementations may provide other
+   * formattings.
+   *
    * Note that this does not change the content of the parameters in the actual request.
    *
    * @param params the parameters to be formatted
    * @return a mapping of the parameters' keys to their formatted values
    */
-  protected def formatParameters(params: MultiParams): MultiParams = {
-    params.map(formatParameter)
-  }
-
-  /**
-   * Formats (masking, prettyprinting, etc.) the given parameter's value for logging purposes.
-   * By default it leaves the parameter untouched, but other implementations may provide other
-   * formattings.
-   *
-   * Note that this does not change the content of the specific parameter in the actual request.
-   *
-   * @param param the parameter to be formatted
-   * @return the formatted parameter
-   */
-  protected def formatParameter(param: MultiParamsEntry): MultiParamsEntry = param
+  protected def formatParameters(params: MultiParams): MultiParams = params
 
   /**
    * Formats (masking, prettyprinting, etc.) the request's remote address for logging purposes.
