@@ -42,26 +42,15 @@ trait ResponseLogFormatter {
    * Maps over all headers in this response and performs formatting (masking, prettyprinting, etc.)
    * for each of them. It returns a new `HeaderMap` with the same keys and the formatted values.
    *
+   * By default it leaves the headers untouched, but other implementations may provide other
+   * formattings.
+   *
    * Note that this does not change the content of the headers in the actual response.
    *
    * @param headers the headers to be formatted
    * @return a mapping of the headers' keys to their formatted values
    */
-  protected def formatResponseHeaders(headers: HeaderMap): HeaderMap = {
-    headers.map(formatResponseHeader)
-  }
-
-  /**
-   * Formats (masking, prettyprinting, etc.) the given header's value for logging purposes.
-   * By default it leaves the header untouched, but other implementations may provide other
-   * formattings.
-   *
-   * Note that this does not change the content of the specific header in the actual response.
-   *
-   * @param header the header to be formatted
-   * @return the formatted header
-   */
-  protected def formatResponseHeader(header: HeaderMapEntry): HeaderMapEntry = header
+  protected def formatResponseHeaders(headers: HeaderMap): HeaderMap = headers
 
   private def getHeaderMap(response: HttpServletResponse): HeaderMap = {
     response.getHeaderNames.asScala.toSeq
@@ -77,19 +66,5 @@ trait ResponseLogFormatter {
    * @param actionHeaders the actionHeaders to be formatted
    * @return the formatted actionHeaders
    */
-  protected def formatActionHeaders(actionHeaders: ActionHeadersMap): ActionHeadersMap = {
-    actionHeaders.map(formatActionHeader)
-  }
-
-  /**
-   * Formats (masking, prettyprinting, etc.) the given header's value for logging purposes.
-   * By default it leaves the header untouched, but other implementations may provide other
-   * formattings.
-   *
-   * Note that this does not change the content of the specific header in the actual response.
-   *
-   * @param header the header to be formatted
-   * @return the formatted header
-   */
-  protected def formatActionHeader(header: ActionHeaderEntry): ActionHeaderEntry = header
+  protected def formatActionHeaders(actionHeaders: ActionHeadersMap): ActionHeadersMap = actionHeaders
 }

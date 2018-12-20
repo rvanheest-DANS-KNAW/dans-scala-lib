@@ -15,10 +15,10 @@
  */
 package nl.knaw.dans.lib.logging.servlet.masked.request
 
-import nl.knaw.dans.lib.logging.servlet.{ HeaderMapEntry, RequestLogFormatter }
+import nl.knaw.dans.lib.logging.servlet.{ HeaderMapEntry, RequestLogExtensionBase }
 import org.scalatra.ScalatraBase
 
-private[masked] trait MaskedCookie extends RequestLogFormatter {
+private[masked] trait MaskedCookie extends RequestLogExtensionBase {
   this: ScalatraBase =>
 
   abstract override protected def formatHeader(header: HeaderMapEntry): HeaderMapEntry = {

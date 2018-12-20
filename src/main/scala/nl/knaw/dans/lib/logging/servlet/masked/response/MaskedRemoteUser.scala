@@ -15,10 +15,10 @@
  */
 package nl.knaw.dans.lib.logging.servlet.masked.response
 
-import nl.knaw.dans.lib.logging.servlet.{ HeaderMapEntry, ResponseLogFormatter }
+import nl.knaw.dans.lib.logging.servlet.{ HeaderMapEntry, ResponseLogExtensionBase }
 import org.scalatra.ScalatraBase
 
-private[masked] trait MaskedRemoteUser extends ResponseLogFormatter {
+private[masked] trait MaskedRemoteUser extends ResponseLogExtensionBase {
   this: ScalatraBase =>
 
   abstract override def formatResponseHeader(header: HeaderMapEntry): HeaderMapEntry = {
