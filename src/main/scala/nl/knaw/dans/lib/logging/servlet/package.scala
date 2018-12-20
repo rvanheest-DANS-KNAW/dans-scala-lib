@@ -18,8 +18,21 @@ package nl.knaw.dans.lib.logging
 import org.scalatra.ActionResult
 
 /**
- * Package for logging servlet requests and responses.
+ * Package for logging servlet requests and responses in a standardized format.
  *
+ * ==Rationale==
+ * The request are logged with `before` filters. An `after` filter would not see an
+ * `org.scalatra.ActionResult`. Its values are not saved in the implicit response provided by
+ * `org.scalatra.ScalatraBase` as done by a trait for a `org.scalatra.ScalatraServlet` that extends
+ * `org.scalatra.auth.ScentrySupport`.
+ * See the last extensive readme version (documentation moved into an incomplete book and guides)
+ * https://github.com/scalatra/scalatra/blob/6a614d17c38d19826467adcabf1dc746e3192dfc/README.markdown
+ * sections #filters #action.
+ *
+ * Using `org.scalatra.util.RequestLogging` broke other unit test as it added a session header to
+ * some responses.
+ *
+ * ==Usage==
  * To enable servlet logging, add the `ServletLogger` trait to servlet definition, together with
  * an implementation of a `com.typesafe.scalalogging.Logger`. In the example below we use
  * `DebugEnhancedLogging` for the latter.
