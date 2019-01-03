@@ -41,7 +41,6 @@ import org.scalatra.ActionResult
  * as well in order mask things like authorization headers, cookies, remote addresses and
  * authentication parameters.
  *
- * @example
  * {{{
  *    import nl.knaw.dans.lib.logging.DebugEnhancedLogging
  *    import nl.knaw.dans.lib.logging.servlet._
@@ -54,6 +53,37 @@ import org.scalatra.ActionResult
  *    }
  *
  *    class MaskedServlet extends ScalatraServlet with ServletLogger with MaskedLogFormatter with DebugEnhancedLogging {
+ *      get("/") {
+ *        Ok("All is well").logResponse
+ *      }
+ *    }
+ * }}}
+ *
+ * ==Extension==
+ * To write custom extensions to the log formatter, create a trait that extends either `RequestLogExtensionBase`
+ * or `ResponseLogExtensionBase`. In this trait, implement the desired method (`formatHeader`, `formatParameter`,
+ * `formatResponseHeader` or `formatActionHeader`), using an `abstract override` (which is important for mixing in
+ * this formatter with the others). Keep in mind that the formatter should only return a formatted version of the
+ * input and not mutate or perform side effects on it.
+ *
+ * {{{
+ *    trait MyCustomRequestHeaderFormatter extends RequestLogExtensionBase {
+ *      this: ScalatraBase =>
+ *
+ *      abstract override protected def formatHeader(header: HeaderMapEntry): HeaderMapEntry = {
+ *        super.formatHeader(header) match {
+ *          case (name, values) if name.toLowerCase == "my-header" =>
+ *            name -> values.map(formatMyHeader)
+ *          case otherwise => otherwise
+ *        }
+ *      }
+ *
+ *      private def formatMyHeader(value: String): String = {
+ *        // return some formatting of 'value'
+ *      }
+ *    }
+ *
+ *    class ExampleServlet extends ScalatraServlet with ServletLogger with MyCustomRequestHeaderFormatter with DebugEnhancedLogging {
  *      get("/") {
  *        Ok("All is well").logResponse
  *      }

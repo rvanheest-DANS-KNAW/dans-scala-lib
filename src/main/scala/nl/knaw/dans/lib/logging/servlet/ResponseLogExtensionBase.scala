@@ -17,6 +17,10 @@ package nl.knaw.dans.lib.logging.servlet
 
 import org.scalatra.ScalatraBase
 
+/**
+ * Base trait for extending the `ResponseLogFormatter`. Every custom response formatter must extend
+ * this trait. For usage, see the documentation in the package object.
+ */
 trait ResponseLogExtensionBase extends ResponseLogFormatter {
   this: ScalatraBase =>
 
