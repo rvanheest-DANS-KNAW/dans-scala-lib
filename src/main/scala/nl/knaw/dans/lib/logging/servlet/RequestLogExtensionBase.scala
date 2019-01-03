@@ -17,6 +17,10 @@ package nl.knaw.dans.lib.logging.servlet
 
 import org.scalatra.{ MultiParams, ScalatraBase }
 
+/**
+ * Base trait for extending the `RequestLogFormatter`. Every custom request formatter must extend
+ * this trait. For usage, see the documentation in the package object.
+ */
 trait RequestLogExtensionBase extends RequestLogFormatter {
   this: ScalatraBase =>
 
