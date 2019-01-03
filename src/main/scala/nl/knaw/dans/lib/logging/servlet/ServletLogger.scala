@@ -49,7 +49,9 @@ trait AbstractServletLogger {
    *
    *   class ExampleServlet extends ScalatraServlet with ServletLogger with DebugEnhancedLogging {
    *     get("/") {
-   *       logResponse(Ok("All is well"))
+   *       logResponse {
+   *         Ok("All is well")
+   *       }
    *     }
    *   }
    * }}}
