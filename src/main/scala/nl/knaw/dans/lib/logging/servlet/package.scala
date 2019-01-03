@@ -29,8 +29,8 @@ import org.scalatra.ActionResult
  * https://github.com/scalatra/scalatra/blob/6a614d17c38d19826467adcabf1dc746e3192dfc/README.markdown
  * sections #filters #action.
  *
- * Using `org.scalatra.util.RequestLogging` broke other unit test as it added a session header to
- * some responses.
+ * Using `org.scalatra.util.RequestLogging` broke unit test in easy-deposit-api as it added a session
+ * header to some responses.
  *
  * ==Usage==
  * To enable servlet logging, add the `ServletLogger` trait to servlet definition, together with
