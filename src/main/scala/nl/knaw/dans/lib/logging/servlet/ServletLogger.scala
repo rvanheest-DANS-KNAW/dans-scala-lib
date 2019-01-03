@@ -15,7 +15,7 @@
  */
 package nl.knaw.dans.lib.logging.servlet
 
-import com.typesafe.scalalogging.{ LazyLogging, Logger }
+import com.typesafe.scalalogging.Logger
 import org.scalatra.{ ActionResult, ScalatraBase }
 
 trait AbstractServletLogger {
