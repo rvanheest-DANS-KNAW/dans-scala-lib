@@ -32,8 +32,8 @@ private[masked] trait MaskedRemoteAddress extends RequestLogExtensionBase {
    *
    * Services without public access might not need to mask.
    */
-  override protected def formatRemoteAddress(remoteAddress: String): String = {
+  abstract override protected def formatRemoteAddress(remoteAddress: String): String = {
     // TODO https://docs.oracle.com/javase/9/docs/api/java/net/Inet6Address.html
-    remoteAddress.replaceAll("([0-9]+[.]){3}", "**.**.**.")
+    super.formatRemoteAddress(remoteAddress).replaceAll("([0-9]+[.]){3}", "**.**.**.")
   }
 }
