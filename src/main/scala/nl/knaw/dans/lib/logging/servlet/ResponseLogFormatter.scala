@@ -42,7 +42,7 @@ trait ResponseLogFormatter {
    * Maps over all headers in this response and performs formatting (masking, prettyprinting, etc.)
    * for each of them. It returns a new `HeaderMap` with the same keys and the formatted values.
    *
-   * By default it leaves the headers untouched, but other implementations may provide other
+   * By default it leaves the headers unformatted, but other implementations may provide other
    * formattings.
    *
    * Note that this does not change the content of the headers in the actual response.

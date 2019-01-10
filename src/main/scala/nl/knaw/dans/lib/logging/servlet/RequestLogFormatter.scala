@@ -43,7 +43,7 @@ trait RequestLogFormatter {
    * Maps over all headers in this request and performs formatting (masking, prettyprinting, etc.)
    * for each of them. It returns a new `HeaderMap` with the same keys and the formatted values.
    *
-   * By default it leaves the headers untouched, but other implementations may provide other
+   * By default it leaves the headers unformatted, but other implementations may provide other
    * formattings.
    *
    * Note that this does not change the formatting of the headers in the actual request.
@@ -64,7 +64,7 @@ trait RequestLogFormatter {
    * Maps over all parameters in this request and performs formatting (masking, prettyprinting, etc.)
    * for each of them. It returns a new `MultiParams` with the same keys and the formatted values.
    *
-   * By default it leaves the parameters untouched, but other implementations may provide other
+   * By default it leaves the parameters unformatted, but other implementations may provide other
    * formattings.
    *
    * Note that this does not change the content of the parameters in the actual request.
@@ -76,7 +76,7 @@ trait RequestLogFormatter {
 
   /**
    * Formats (masking, prettyprinting, etc.) the request's remote address for logging purposes.
-   * By default it leaves the address untouched, but other implementations may provide other
+   * By default it leaves the address unformatted, but other implementations may provide other
    * formattings.
    *
    * Note that this does not change the remote address in the actual request.
