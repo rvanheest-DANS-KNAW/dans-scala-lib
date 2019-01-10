@@ -49,7 +49,7 @@ trait RequestLogExtensionBase extends RequestLogFormatter {
 
   /**
    * Formats (masking, prettyprinting, etc.) the given parameter's value for logging purposes.
-   * By default it leaves the parameter untouched, but other implementations may provide other
+   * By default it leaves the parameter unformatted, but other implementations may provide other
    * formattings.
    *
    * Note that this does not change the content of the specific parameter in the actual request.
