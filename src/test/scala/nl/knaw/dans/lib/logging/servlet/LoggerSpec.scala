@@ -74,7 +74,7 @@ class LoggerSpec extends FlatSpec with Matchers with ServletFixture with Scalatr
       requestLine should startWith(s"GET http://localhost:$port$path")
 
       responseLine should startWith(s"GET returned status=200; ")
-      responseLine.toLowerCase() should include(s"content-type -> [text/plain;charset=utf-8]")
+      responseLine.toLowerCase() should include(s"content-type -> text/plain;charset=utf-8")
       responseLine should include(s"actionHeaders=[]")
     }
   }
