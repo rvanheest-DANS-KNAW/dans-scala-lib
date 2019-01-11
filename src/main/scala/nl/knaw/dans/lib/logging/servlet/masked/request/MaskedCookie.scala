@@ -24,12 +24,12 @@ private[masked] trait MaskedCookie extends RequestLogExtensionBase {
   abstract override protected def formatHeader(header: HeaderMapEntry): HeaderMapEntry = {
     super.formatHeader(header) match {
       case (name, values) if name.toLowerCase == "cookie" =>
-        name -> values.map(formatCookieValue)
+        name -> values.map(formatCookieHeader)
       case otherwise => otherwise
     }
   }
 
-  private def formatCookieValue(value: String): String = {
+  private def formatCookieHeader(value: String): String = {
     val cookieName = value.replaceAll("=.*", "")
     val cookieValue = value.replaceAll(".*=", "")
     val maskedCookieValue = cookieValue .replaceAll("[^.]+", "****")// replace sequences of chars without dots
