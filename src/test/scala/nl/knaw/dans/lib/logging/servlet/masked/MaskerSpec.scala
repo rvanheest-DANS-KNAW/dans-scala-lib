@@ -9,7 +9,6 @@ class MaskerSpec extends FlatSpec with Matchers {
   private val cookie = s"$cookieKey=$cookieValue"
 
   "formatCookie" should "replaces cookie value with ****" in {
-
     Masker.formatCookie(cookie) shouldBe s"$cookieKey=****.****.****"
   }
 
