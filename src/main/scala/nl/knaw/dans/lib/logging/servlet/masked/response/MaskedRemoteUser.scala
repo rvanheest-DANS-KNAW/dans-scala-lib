@@ -21,7 +21,7 @@ import org.scalatra.ScalatraBase
 private[masked] trait MaskedRemoteUser extends ResponseLogExtensionBase {
   this: ScalatraBase =>
 
-  abstract override def formatResponseHeader(header: HeaderMapEntry): HeaderMapEntry = {
+  abstract override protected def formatResponseHeader(header: HeaderMapEntry): HeaderMapEntry = {
     super.formatResponseHeader(header) match {
       case (name, values) if name.toLowerCase == "remote_user" =>
         name -> values.map(formatRemoteUserValue)

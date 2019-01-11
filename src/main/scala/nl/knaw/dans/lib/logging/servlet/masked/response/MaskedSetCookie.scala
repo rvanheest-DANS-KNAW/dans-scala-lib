@@ -21,7 +21,7 @@ import org.scalatra.ScalatraBase
 private[masked] trait MaskedSetCookie extends ResponseLogExtensionBase {
   this: ScalatraBase =>
 
-  abstract override def formatResponseHeader(header: HeaderMapEntry): HeaderMapEntry = {
+  abstract override protected def formatResponseHeader(header: HeaderMapEntry): HeaderMapEntry = {
     super.formatResponseHeader(header) match {
       case (name, values) if name.toLowerCase == "set-cookie" =>
         name -> values.map(formatCookieValue)
@@ -30,9 +30,8 @@ private[masked] trait MaskedSetCookie extends ResponseLogExtensionBase {
   }
 
   private def formatCookieValue(value: String): String = {
-    val cookieName = value.replaceAll("=.*", "")
-    val cookieValue = value.replaceAll(".*=", "")
-    val maskedCookieValue = cookieValue.replaceAll("[^.=]", "*") // replace everything but dots
+    val Array(cookieName, cookieValue) = value.split("=", 2)
+    val maskedCookieValue = cookieValue.split("\\.").map(_ => "****").mkString(".")
     s"$cookieName=$maskedCookieValue"
   }
 }
