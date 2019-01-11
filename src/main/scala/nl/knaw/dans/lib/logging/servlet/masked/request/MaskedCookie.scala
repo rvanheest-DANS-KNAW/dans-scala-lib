@@ -31,7 +31,7 @@ private[masked] trait MaskedCookie extends RequestLogExtensionBase {
 
   private def formatCookieValue(value: String): String = {
     val Array(cookieName, cookieValue) = value.split("=", 2)
-    val maskedCookieValue = cookieValue.split("\\.").map(_ => "****").mkString(".")
+    val maskedCookieValue = cookieValue .replaceAll("[^.]+", "****")// replace sequences of chars without dots
     s"$cookieName=$maskedCookieValue"
   }
 }
