@@ -19,7 +19,19 @@ import org.scalatest.{ FlatSpec, Matchers }
 
 class MapExtensionsSpec extends FlatSpec with Matchers {
 
-  "makeString" should "format a Map[String, String] properly" in {
+  "makeString" should "take add square brackets if the input has no elements" in {
+    val input = Map.empty[String, String]
+
+    input.makeString shouldBe "[]"
+  }
+
+  it should "take add square brackets if the input has only one element" in {
+    val input = Map("a" -> "foo")
+
+    input.makeString shouldBe "[a -> foo]"
+  }
+
+  it should "format a Map[String, String] properly" in {
     val input = Map(
       "a" -> "foo",
       "b" -> "bar",
@@ -28,6 +40,28 @@ class MapExtensionsSpec extends FlatSpec with Matchers {
     )
 
     input.makeString shouldBe "[a -> foo, b -> bar, c -> baz, d -> qux]"
+  }
+
+  it should "take special care of values that are a Seq with no elements (empty square brackets)" in {
+    val input = Map(
+      "a" -> "".toSeq,
+      "b" -> "".toSeq,
+      "c" -> "".toSeq,
+      "d" -> "".toSeq,
+    )
+
+    input.makeString shouldBe "[a -> [], b -> [], c -> [], d -> []]"
+  }
+
+  it should "take special care of values that are a Seq with one element (NO square brackets)" in {
+    val input = Map(
+      "a" -> "f".toSeq,
+      "b" -> "b".toSeq,
+      "c" -> "b".toSeq,
+      "d" -> "q".toSeq,
+    )
+
+    input.makeString shouldBe "[a -> f, b -> b, c -> b, d -> q]"
   }
 
   it should "take special care of values that are a Seq" in {
