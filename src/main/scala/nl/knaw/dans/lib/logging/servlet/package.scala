@@ -103,10 +103,15 @@ package object servlet {
     /** @return a toString like value with less class names */
     private[servlet] def makeString: String = {
       def formatSeq[T](seq: Seq[T]): String = {
-        seq.map {
+        val formatted = seq.map {
           case t: Seq[_] => formatSeq(t)
           case t => t
-        }.mkString("[", ", ", "]")
+        }
+
+        formatted match {
+          case Seq(singleton) => singleton.toString
+          case _ => formatted.mkString("[", ", ", "]")
+        }
       }
 
       stringMap.map {
