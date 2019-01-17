@@ -17,11 +17,24 @@ package nl.knaw.dans.lib.logging.servlet
 
 import nl.knaw.dans.lib.fixtures.ServletFixture
 import nl.knaw.dans.lib.logging.servlet.masked.MaskedRemoteAddress
-import org.scalatest.{ FlatSpec, Matchers }
+import org.scalatest.{ FlatSpec, Inside, Matchers }
 import org.scalatra.test.scalatest.ScalatraSuite
 import org.scalatra.{ ActionResult, Ok, ScalatraBase, ScalatraServlet }
 
-class LoggerSpec extends FlatSpec with Matchers with ServletFixture with ScalatraSuite {
+class AbstractServletLoggerSpec extends FlatSpec with Matchers with Inside with ServletFixture with ScalatraSuite {
+
+  trait TestLoggers extends AbstractServletLogger
+    with ResponseLogFormatter
+    with RequestLogFormatter {
+    this: ScalatraBase =>
+
+    override def logResponse(actionResult: ActionResult): ActionResult = {
+      stringBuilder append formatResponseLog(actionResult) append "\n"
+      actionResult
+    }
+
+    override def logRequest(): Unit = stringBuilder append formatRequestLog append "\n"
+  }
 
   private class TestServlet() extends ScalatraServlet {
     this: AbstractServletLogger =>
@@ -38,19 +51,6 @@ class LoggerSpec extends FlatSpec with Matchers with ServletFixture with Scalatr
 
   addServlet(new TestServlet() with TestLoggers, testLoggersPath)
   addServlet(new TestServlet() with TestLoggers with MaskedRemoteAddress, maskedLoggersPath)
-
-  trait TestLoggers extends AbstractServletLogger
-    with ResponseLogFormatter
-    with RequestLogFormatter {
-    this: ScalatraBase =>
-
-    override def logResponse(actionResult: ActionResult): ActionResult = {
-      stringBuilder append formatResponseLog(actionResult) append "\n"
-      actionResult
-    }
-
-    override def logRequest(): Unit = stringBuilder append formatRequestLog append "\n"
-  }
 
   "combined custom loggers" should "override default loggers" in {
     shouldDivertLogging(testLoggersPath)
@@ -69,9 +69,14 @@ class LoggerSpec extends FlatSpec with Matchers with ServletFixture with Scalatr
       status shouldBe 200
       body shouldBe "How y'all doin'?"
       val port = localPort.getOrElse("None")
-      val Array(requestLine, responseLine) = stringBuilder.toString().split("\n")
+
+      val resultLines = stringBuilder.lines.toList
+      resultLines should have size 2
+
+      val requestLine :: responseLine :: Nil = resultLines
 
       requestLine should startWith(s"GET http://localhost:$port$path")
+      requestLine should include(s"remote=$formattedRemote;")
 
       responseLine should startWith(s"GET returned status=200; ")
       responseLine.toLowerCase() should include(s"content-type -> [text/plain;charset=utf-8]")
