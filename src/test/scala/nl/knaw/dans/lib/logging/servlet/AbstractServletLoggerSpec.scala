@@ -17,11 +17,11 @@ package nl.knaw.dans.lib.logging.servlet
 
 import nl.knaw.dans.lib.fixtures.ServletFixture
 import nl.knaw.dans.lib.logging.servlet.masked.MaskedRemoteAddress
-import org.scalatest.{ FlatSpec, Inside, Matchers }
+import org.scalatest.{ FlatSpec, Matchers }
 import org.scalatra.test.scalatest.ScalatraSuite
 import org.scalatra.{ ActionResult, Ok, ScalatraBase, ScalatraServlet }
 
-class AbstractServletLoggerSpec extends FlatSpec with Matchers with Inside with ServletFixture with ScalatraSuite {
+class AbstractServletLoggerSpec extends FlatSpec with Matchers with ServletFixture with ScalatraSuite {
 
   trait TestLoggers extends AbstractServletLogger
     with ResponseLogFormatter
