@@ -23,7 +23,7 @@ import org.scalatra.{ ActionResult, Ok, ScalatraBase, ScalatraServlet }
 
 class AbstractServletLoggerSpec extends FlatSpec with Matchers with ServletFixture with ScalatraSuite {
 
-  trait TestLoggers extends AbstractServletLogger
+  private trait TestLoggers extends AbstractServletLogger
     with ResponseLogFormatter
     with RequestLogFormatter {
     this: ScalatraBase =>
@@ -36,8 +36,7 @@ class AbstractServletLoggerSpec extends FlatSpec with Matchers with ServletFixtu
     override def logRequest(): Unit = stringBuilder append formatRequestLog append "\n"
   }
 
-  private class TestServlet() extends ScalatraServlet {
-    this: AbstractServletLogger =>
+  private class TestServlet() extends ScalatraServlet with TestLoggers {
 
     get("/") {
       contentType = "text/plain"
@@ -49,8 +48,8 @@ class AbstractServletLoggerSpec extends FlatSpec with Matchers with ServletFixtu
   private val testLoggersPath = "/combinedLogger"
   private val maskedLoggersPath = "/requestLogger"
 
-  addServlet(new TestServlet() with TestLoggers, testLoggersPath)
-  addServlet(new TestServlet() with TestLoggers with MaskedRemoteAddress, maskedLoggersPath)
+  addServlet(new TestServlet(), testLoggersPath)
+  addServlet(new TestServlet() with MaskedRemoteAddress, maskedLoggersPath)
 
   "combined custom loggers" should "override default loggers" in {
     shouldDivertLogging(testLoggersPath)
