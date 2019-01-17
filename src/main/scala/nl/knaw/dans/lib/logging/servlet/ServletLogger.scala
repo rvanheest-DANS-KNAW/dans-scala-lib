@@ -18,6 +18,14 @@ package nl.knaw.dans.lib.logging.servlet
 import com.typesafe.scalalogging.Logger
 import org.scalatra.{ ActionResult, ScalatraBase }
 
+/**
+ * This trait is the base for every servlet logger. It provides two abstract methods: `logRequest`
+ * and `logResponse`.
+ * Furthermore it adds a call to `logRequest` to the 'before filters' of `ScalatraBase`,
+ * such that this method is called automatically on every request that comes in.
+ * Finally it provides a 'self-pointer' in implicit scope, such that `LogResponseSyntax` can be
+ * used automatically (see the documentation of `logResponse` for an example).
+ */
 trait AbstractServletLogger {
   this: ScalatraBase =>
 
@@ -73,6 +81,16 @@ trait AbstractServletLogger {
   def logResponse(actionResult: ActionResult): ActionResult
 }
 
+/**
+ * Default servlet logger implemented with calls to `logger.info` for both the request and response logging.
+ * Please note that the `logger` field is not implemented. It is most common to mixin `DebugEnhancedLogging`
+ * for this, but other logger implementations can be provided as well.
+ *
+ * @example
+ * {{{
+ *   class ExampleServlet extends ScalatraServlet with ServletLogger with DebugEnhancedLogging
+ * }}}
+ */
 trait ServletLogger extends AbstractServletLogger with RequestLogFormatter with ResponseLogFormatter {
   this: ScalatraBase =>
 
