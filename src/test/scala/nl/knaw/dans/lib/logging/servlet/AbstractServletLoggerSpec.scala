@@ -68,7 +68,7 @@ class AbstractServletLoggerSpec extends FlatSpec with Matchers with ServletFixtu
     get(uri = realPath) {
       status shouldBe 200
       body shouldBe "How y'all doin'?"
-      val port = localPort.getOrElse("None")
+      val port = localPort.fold("None")(_.toString)
 
       val resultLines = stringBuilder.lines.toList
       resultLines should have size 2
