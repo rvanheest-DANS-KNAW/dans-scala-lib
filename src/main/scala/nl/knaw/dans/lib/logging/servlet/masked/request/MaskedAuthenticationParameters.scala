@@ -15,6 +15,7 @@
  */
 package nl.knaw.dans.lib.logging.servlet.masked.request
 
+import nl.knaw.dans.lib.logging.servlet.masked.Masker
 import nl.knaw.dans.lib.logging.servlet.{ MultiParamsEntry, RequestLogExtensionBase }
 import org.scalatra.ScalatraBase
 
@@ -22,10 +23,6 @@ private[masked] trait MaskedAuthenticationParameters extends RequestLogExtension
   this: ScalatraBase =>
 
   abstract override protected def formatParameter(param: MultiParamsEntry): MultiParamsEntry = {
-    super.formatParameter(param) match {
-      case (name, values) if Seq("login", "password").contains(name.toLowerCase) =>
-        name -> values.map(_ => "*****")
-      case otherwise => otherwise
-    }
+    Masker.formatAuthenticationParameter(super.formatParameter(param))
   }
 }

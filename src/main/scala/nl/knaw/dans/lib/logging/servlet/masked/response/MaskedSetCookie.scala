@@ -15,24 +15,14 @@
  */
 package nl.knaw.dans.lib.logging.servlet.masked.response
 
+import nl.knaw.dans.lib.logging.servlet.masked.Masker
 import nl.knaw.dans.lib.logging.servlet.{ HeaderMapEntry, ResponseLogExtensionBase }
 import org.scalatra.ScalatraBase
 
 private[masked] trait MaskedSetCookie extends ResponseLogExtensionBase {
   this: ScalatraBase =>
 
-  abstract override def formatResponseHeader(header: HeaderMapEntry): HeaderMapEntry = {
-    super.formatResponseHeader(header) match {
-      case (name, values) if name.toLowerCase == "set-cookie" =>
-        name -> values.map(formatCookieValue)
-      case otherwise => otherwise
-    }
-  }
-
-  private def formatCookieValue(value: String): String = {
-    val cookieName = value.replaceAll("=.*", "")
-    val cookieValue = value.replaceAll(".*=", "")
-    val maskedCookieValue = cookieValue.replaceAll("[^.=]", "*") // replace everything but dots
-    s"$cookieName=$maskedCookieValue"
+  abstract override protected def formatResponseHeader(header: HeaderMapEntry): HeaderMapEntry = {
+    Masker.formatCookieHeader("set-cookie")(super.formatResponseHeader(header))
   }
 }

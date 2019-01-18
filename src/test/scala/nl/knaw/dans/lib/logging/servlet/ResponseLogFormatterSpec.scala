@@ -56,6 +56,6 @@ class ResponseLogFormatterSpec extends FlatSpec with Matchers with MockFactory w
 
   it should "mask everything when using the MaskedResponseLogFormatter" in {
     (new TestServlet() with MaskedResponseLogFormatter).formatResponseLog(Ok()) shouldBe
-      "GET returned status=200; authHeaders=[Set-Cookie -> [scentry.auth.default.user=******.**.**], REMOTE_USER -> [*****], Expires -> [Thu, 01 Jan 1970 00:00:00 GMT]]; actionHeaders=[]"
+      "GET returned status=200; authHeaders=[Set-Cookie -> [scentry.auth.default.user=****.****.****], REMOTE_USER -> [*****], Expires -> [Thu, 01 Jan 1970 00:00:00 GMT]]; actionHeaders=[]"
   }
 }
