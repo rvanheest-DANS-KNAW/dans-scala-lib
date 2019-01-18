@@ -31,15 +31,15 @@ trait NamedCookieMasker extends RequestLogExtensionBase with ResponseLogExtensio
     Masker.formatCookieHeader("set-cookie")(formatCookie)(super.formatResponseHeader(header))
   }
 
-  private def formatCookie(value: String): String = {
-    val cookieName = value.replaceAll("=.*", "")
+  private def formatCookie(headerValue: String): String = {
+    val cookieName = headerValue.replaceAll("=.*", "")
     if (cookieName == "my-cookie") {
-      val cookieValue = value.replaceFirst("[^=]+=", "")
+      val cookieValue = headerValue.replaceFirst("[^=]+=", "")
       // replace sequences of chars without dots
       val maskedCookieValue = cookieValue.replaceAll("[^.]+", "****")
       s"$cookieName=$maskedCookieValue"
     }
-    else value
+    else headerValue
   }
 }
 
