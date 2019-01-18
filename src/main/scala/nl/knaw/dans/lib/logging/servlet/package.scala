@@ -50,7 +50,7 @@ import org.scalatra.{ ActionResult, ScalatraBase }
  *    import nl.knaw.dans.lib.logging.servlet._
  *    import org.scalatra.{ Ok, ScalatraServlet }
  *
- *    // example with plain logging of requests and responses
+ *    // example that logs plain values of request and response details
  *    class ExampleServlet extends ScalatraServlet
  *      with ServletLogger
  *      with PlainLogFormatter
@@ -61,7 +61,7 @@ import org.scalatra.{ ActionResult, ScalatraBase }
  *      }
  *    }
  *
- *    // example with masked logging
+ *    // example that masks privacy sensitive values when logging request and response details
  *    class MaskedServlet extends ScalatraServlet
  *      with ServletLogger
  *      with MaskedLogFormatter
@@ -72,7 +72,7 @@ import org.scalatra.{ ActionResult, ScalatraBase }
  *      }
  *    }
  *
- *    // example with masking for only the remote address (request) and remote user (response)
+ *    // example that masks only the remote address (request) and remote user (response) values
  *    import nl.knaw.dans.lib.logging.servlet.masked._
  *    class MaskedServlet extends ScalatraServlet
  *      with ServletLogger
