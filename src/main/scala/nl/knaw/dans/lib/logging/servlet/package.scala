@@ -34,16 +34,14 @@ import org.scalatra.{ ActionResult, ScalatraBase }
  *
  * ==Usage==
  * To enable servlet logging, add the `ServletLogger` trait to the servlet definition, together with
- * a `RequestLogFormatter` and `ResponseLogFormatter` implementation (by default `PlainLogFormatter`)
- * and an implementation of a `com.typesafe.scalalogging.Logger`. In the example below we use
- * `DebugEnhancedLogging` for the latter.
+ * a `RequestLogFormatter`, a `ResponseLogFormatter` and a `com.typesafe.scalalogging.Logger`.
  *
- * When the request/response contain privacy sensitive data, a `MaskedLogFormatter` might be used
- * instead of `PlainLogFormatter` in order to mask things like authorization headers, cookies,
- * remote addresses and authentication parameters.
+ * In the example below we use `DebugEnhancedLogging` for the latter. The `PlainLogFormatter`
+ * and `MaskedLogFormatter` both implement the two LogFormatters. The latter masks privacy sensitive
+ * values like user names, passwords and remote addresses.
  *
- * When only parts of the request/response contain privacy sensitive data, the necessary individual
- * parts of the `MaskedLogFormatter` can be added instead in combination with the `PlainLogFormatter`.
+ * When you want to mask less, for example to debug tests, add individual
+ * parts of the `MaskedLogFormatter` to the `PlainLogFormatter`.
  *
  * {{{
  *    import nl.knaw.dans.lib.logging.DebugEnhancedLogging
@@ -89,16 +87,12 @@ import org.scalatra.{ ActionResult, ScalatraBase }
  *
  * ==Extension==
  *
- * // This example is a bridge too far.
- * // The typical use case would be a variation or mix of the PlainLogFormatter and/or the MaskedLogFormatter.
- * // A CustomLogFormatter could extend a mix of Plain/Masked/Custom-Request/Response-LogFormatter.
- * // The Custom-Request/Response-LogFormatter in turn can mix Plain/Masked/Custom traits.
- *
- * To write custom extensions to the log formatter, create a trait that extends either `RequestLogExtensionBase`
- * or `ResponseLogExtensionBase`. In this trait, implement the desired method (`formatHeader`, `formatParameter`,
- * `formatResponseHeader` or `formatActionHeader`), using an `abstract override` (which is important for mixing in
- * this formatter with the others). Keep in mind that the formatter should only return a formatted version of the
- * input and not mutate or perform side effects on it.
+ * For a variant of a `MaskedLogFormatter` component you can create a trait that extends either
+ * `RequestLogExtensionBase` or `ResponseLogExtensionBase`. In this trait, implement the desired
+ * method (`formatHeader`, `formatParameter`, `formatResponseHeader` or `formatActionHeader`),
+ * using an `abstract override` (which is important for mixing in this formatter with the others).
+ * Keep in mind that the formatter should only return a formatted version of the input and not
+ * mutate or perform side effects on it.
  *
  * {{{
  *    trait MyCustomRequestHeaderFormatter extends RequestLogExtensionBase {
