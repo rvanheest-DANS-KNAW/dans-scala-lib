@@ -67,7 +67,7 @@ object Masker {
     formatTuple(Seq("login", "password") contains _.toLowerCase)(_ => "*****")
   }
 
-  private def formatTuple(predicate: String => Boolean)
+  def formatTuple(predicate: String => Boolean)
                          (format: String => String)
                          (tuple: (String, Seq[String])): HeaderMapEntry = {
     tuple match {
