@@ -25,6 +25,15 @@ trait RequestLogFormatter {
 
   /**
    * Constructs the `String` to be logged by `ServletLogger` about this request.
+   * The resulted log line by default consists of:
+   *   - the request's method (GET, POST, etc.)
+   *   - the request's URL
+   *   - the IP address this request is coming from
+   *   - parameters sent with this request
+   *   - headers sent with this request
+   *
+   * Please note that no data in this log line is masked. If masking is required, please refer
+   * to the aggregated `MaskedLogFormatter` or the individual maskers in the `masked` package.
    *
    * @return the `String` to be logged
    */

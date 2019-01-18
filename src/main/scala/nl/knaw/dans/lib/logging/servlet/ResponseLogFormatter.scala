@@ -23,10 +23,16 @@ import scala.collection.JavaConverters._
 trait ResponseLogFormatter {
   this: ScalatraBase =>
 
-  // TODO what is "this response"?
-  //  make clear that it might be more than the actionResult: the authHeaders
   /**
    * Constructs the `String` to be logged by `ServletLogger` about this response.
+   * The resulted log line by default consists of:
+   *   - the request's method (GET, POST, etc.)
+   *   - the status code of the `actionResult`
+   *   - headers sent with this response, originating from the `HttpServletResponse` instance
+   *   - headers sent with this response, originating from the `actionResult`
+   *
+   * Please note that no data in this log line is masked. If masking is required, please refer
+   * to the aggregated `MaskedLogFormatter` or the individual maskers in the `masked` package.
    *
    * @param actionResult the ActionResult to be logged
    * @return the `String` to be logged
