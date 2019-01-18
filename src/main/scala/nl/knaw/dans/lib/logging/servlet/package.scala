@@ -49,7 +49,7 @@ import org.scalatra.ActionResult
  *    import nl.knaw.dans.lib.logging.servlet._
  *    import org.scalatra.{ Ok, ScalatraServlet }
  *
- *    // example with default logging of requests and responses
+ *    // example that logs plain values of request and response details
  *    class ExampleServlet extends ScalatraServlet with ServletLogger with DebugEnhancedLogging {
  *
  *      // I'd like to see a mandatory choice between a MaskedLogFormatter, a PlainLogFormatter or a CustomLogFormatter.
@@ -60,14 +60,14 @@ import org.scalatra.ActionResult
  *      }
  *    }
  *
- *    // example with masked logging
+ *    // example that masks privacy sensitive values when logging request and response details
  *    class MaskedServlet extends ScalatraServlet with ServletLogger with MaskedLogFormatter with DebugEnhancedLogging {
  *      get("/") {
  *        Ok("All is well").logResponse
  *      }
  *    }
  *
- *    // example with masking for only the remote address (request) and remote user (response)
+ *    // example that masks only the remote address (request) and remote user (response) values
  *    import nl.knaw.dans.lib.logging.servlet.masked._
  *    class MaskedServlet extends ScalatraServlet with ServletLogger with MaskedRemoteAddress with MaskedRemoteUser with DebugEnhancedLogging {
  *      get("/") {
