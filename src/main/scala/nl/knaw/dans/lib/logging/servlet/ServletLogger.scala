@@ -48,6 +48,7 @@ trait AbstractServletLogger {
    * Performs the side effect of the logging of the response, contained in the given `ActionResult`.
    * This method is either called directly or via the extension method provided by
    * `LogResponseSyntax`.
+   * In differences in the spelled out examples are `Ok().logResponse` or `logResponse {Ok()}`.
    *
    * @example
    * {{{

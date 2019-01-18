@@ -34,6 +34,9 @@ private[masked] trait MaskedRemoteAddress extends RequestLogExtensionBase {
    */
   abstract override protected def formatRemoteAddress(remoteAddress: String): String = {
     // TODO https://docs.oracle.com/javase/9/docs/api/java/net/Inet6Address.html
+    //  see also:
+    //  https://stackoverflow.com/questions/3118829/why-request-getremoteaddr-returns-ipv4-or-ipv6-depending-on-context-post-quer
+    //  https://stackoverflow.com/questions/7589526/what-is-the-ip-format-returned-by-servletrequest-getremoteaddr
     super.formatRemoteAddress(remoteAddress).replaceAll("([0-9]+[.]){3}", "**.**.**.")
   }
 }
