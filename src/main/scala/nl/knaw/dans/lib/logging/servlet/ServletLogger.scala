@@ -93,8 +93,8 @@ trait AbstractServletLogger {
  *   class ExampleServlet extends ScalatraServlet with ServletLogger with DebugEnhancedLogging
  * }}}
  */
-trait ServletLogger extends AbstractServletLogger with RequestLogFormatter with ResponseLogFormatter {
-  this: ScalatraBase =>
+trait ServletLogger extends AbstractServletLogger {
+  this: ScalatraBase with RequestLogFormatter with ResponseLogFormatter =>
 
   protected val logger: Logger
 

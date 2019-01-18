@@ -27,7 +27,7 @@ class ServletLoggerSpec extends FlatSpec with Matchers with MockFactory with Ser
 
   private val mockedLogger = mock[Underlying]
 
-  private trait TestLogger extends ServletLogger {
+  private trait TestLogger extends ServletLogger with PlainLogFormatter {
     this: ScalatraBase =>
 
     override protected val logger: Logger = Logger(mockedLogger)
