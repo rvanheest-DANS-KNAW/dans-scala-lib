@@ -41,11 +41,15 @@ import org.scalatra.ActionResult
  * as well in order mask things like authorization headers, cookies, remote addresses and
  * authentication parameters.
  *
+ * When only parts of the request/response contain privacy sensitive data, the necessary individual
+ * parts of the `MaskedLogFormatter` can be added instead.
+ *
  * {{{
  *    import nl.knaw.dans.lib.logging.DebugEnhancedLogging
  *    import nl.knaw.dans.lib.logging.servlet._
  *    import org.scalatra.{ Ok, ScalatraServlet }
  *
+ *    // example with default logging of requests and responses
  *    class ExampleServlet extends ScalatraServlet with ServletLogger with DebugEnhancedLogging {
  *
  *      // I'd like to see a mandatory choice between a MaskedLogFormatter, a PlainLogFormatter or a CustomLogFormatter.
@@ -56,7 +60,16 @@ import org.scalatra.ActionResult
  *      }
  *    }
  *
+ *    // example with masked logging
  *    class MaskedServlet extends ScalatraServlet with ServletLogger with MaskedLogFormatter with DebugEnhancedLogging {
+ *      get("/") {
+ *        Ok("All is well").logResponse
+ *      }
+ *    }
+ *
+ *    // example with masking for only the remote address (request) and remote user (response)
+ *    import nl.knaw.dans.lib.logging.servlet.masked._
+ *    class MaskedServlet extends ScalatraServlet with ServletLogger with MaskedRemoteAddress with MaskedRemoteUser with DebugEnhancedLogging {
  *      get("/") {
  *        Ok("All is well").logResponse
  *      }
