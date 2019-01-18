@@ -17,7 +17,7 @@ package nl.knaw.dans.lib.logging.servlet.masked
 
 import nl.knaw.dans.lib.logging.servlet.{ HeaderMapEntry, MultiParamsEntry }
 
-private[masked] object Masker {
+object Masker {
 
   def formatCookie(value: String): String = {
     val cookieName = value.replaceAll("=.*", "")
@@ -46,8 +46,8 @@ private[masked] object Masker {
     remoteAddress.replaceAll("([0-9]+[.]){3}", "**.**.**.")
   }
 
-  def formatCookieHeader(headerName: String): HeaderMapEntry => HeaderMapEntry = {
-    formatTuple(_.toLowerCase == headerName)(formatCookie)
+  def formatCookieHeader(headerName: String)(formatter: String => String): HeaderMapEntry => HeaderMapEntry = {
+    formatTuple(_.toLowerCase == headerName)(formatter)
   }
 
   /**
@@ -67,7 +67,7 @@ private[masked] object Masker {
     formatTuple(Seq("login", "password") contains _.toLowerCase)(_ => "*****")
   }
 
-  private def formatTuple(predicate: String => Boolean)
+  def formatTuple(predicate: String => Boolean)
                          (format: String => String)
                          (tuple: (String, Seq[String])): HeaderMapEntry = {
     tuple match {

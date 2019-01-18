@@ -48,6 +48,8 @@ trait AbstractServletLogger {
    * Performs the side effect of the logging of the response, contained in the given `ActionResult`.
    * This method is either called directly or via the extension method provided by
    * `LogResponseSyntax`.
+   * In the examples below the two syntaxes are shown. Please note that the only difference is
+   * `logResponse { Ok() }` vs. `Ok().logResponse`.
    *
    * @example
    * {{{
@@ -91,8 +93,8 @@ trait AbstractServletLogger {
  *   class ExampleServlet extends ScalatraServlet with ServletLogger with DebugEnhancedLogging
  * }}}
  */
-trait ServletLogger extends AbstractServletLogger with RequestLogFormatter with ResponseLogFormatter {
-  this: ScalatraBase =>
+trait ServletLogger extends AbstractServletLogger {
+  this: ScalatraBase with RequestLogFormatter with ResponseLogFormatter =>
 
   protected val logger: Logger
 

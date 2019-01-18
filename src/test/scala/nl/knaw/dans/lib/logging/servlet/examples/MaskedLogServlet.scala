@@ -13,16 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package nl.knaw.dans.lib.logging.servlet.masked.request
+package nl.knaw.dans.lib.logging.servlet.examples
 
-import nl.knaw.dans.lib.logging.servlet.masked.Masker
-import nl.knaw.dans.lib.logging.servlet.{ HeaderMapEntry, RequestLogExtensionBase }
-import org.scalatra.ScalatraBase
+import nl.knaw.dans.lib.logging.DebugEnhancedLogging
+import nl.knaw.dans.lib.logging.servlet._
+import org.scalatra.{ Ok, ScalatraServlet }
 
-private[masked] trait MaskedCookie extends RequestLogExtensionBase {
-  this: ScalatraBase =>
+class MaskedLogServlet extends ScalatraServlet
+  with ServletLogger
+  with MaskedLogFormatter
+  with DebugEnhancedLogging {
 
-  abstract override protected def formatHeader(header: HeaderMapEntry): HeaderMapEntry = {
-    Masker.formatCookieHeader("cookie")(Masker.formatCookie)(super.formatHeader(header))
+  get("/") {
+    Ok("foobar").logResponse
   }
 }

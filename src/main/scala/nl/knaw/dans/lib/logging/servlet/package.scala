@@ -15,7 +15,7 @@
  */
 package nl.knaw.dans.lib.logging
 
-import org.scalatra.ActionResult
+import org.scalatra.{ ActionResult, ScalatraBase }
 
 /**
  * Package for logging servlet requests and responses in a standardized format.
@@ -33,26 +33,52 @@ import org.scalatra.ActionResult
  * header to some responses.
  *
  * ==Usage==
- * To enable servlet logging, add the `ServletLogger` trait to servlet definition, together with
- * an implementation of a `com.typesafe.scalalogging.Logger`. In the example below we use
- * `DebugEnhancedLogging` for the latter.
+ * To enable servlet logging, add the `ServletLogger` trait to the servlet definition, together with
+ * a `RequestLogFormatter`, a `ResponseLogFormatter` and a `com.typesafe.scalalogging.Logger`.
  *
- * When the request/response contain privacy sensitive data, a `MaskedLogFormatter` might be added
- * as well in order mask things like authorization headers, cookies, remote addresses and
- * authentication parameters.
+ * In the example below we use `DebugEnhancedLogging` for the latter. The `PlainLogFormatter`
+ * and `MaskedLogFormatter` both implement the two LogFormatters. The latter masks privacy sensitive
+ * values like user names, passwords and remote addresses.
+ *
+ * When you want to mask less, for example to debug tests, add individual
+ * parts of the `MaskedLogFormatter` to the `PlainLogFormatter`.
  *
  * {{{
  *    import nl.knaw.dans.lib.logging.DebugEnhancedLogging
  *    import nl.knaw.dans.lib.logging.servlet._
  *    import org.scalatra.{ Ok, ScalatraServlet }
  *
- *    class ExampleServlet extends ScalatraServlet with ServletLogger with DebugEnhancedLogging {
+ *    // example that logs plain values of request and response details
+ *    class ExampleServlet extends ScalatraServlet
+ *      with ServletLogger
+ *      with PlainLogFormatter
+ *      with DebugEnhancedLogging {
+ *
  *      get("/") {
  *        Ok("All is well").logResponse
  *      }
  *    }
  *
- *    class MaskedServlet extends ScalatraServlet with ServletLogger with MaskedLogFormatter with DebugEnhancedLogging {
+ *    // example that masks privacy sensitive values when logging request and response details
+ *    class MaskedServlet extends ScalatraServlet
+ *      with ServletLogger
+ *      with MaskedLogFormatter
+ *      with DebugEnhancedLogging {
+ *
+ *      get("/") {
+ *        Ok("All is well").logResponse
+ *      }
+ *    }
+ *
+ *    // example that masks only the remote address (request) and remote user (response) values
+ *    import nl.knaw.dans.lib.logging.servlet.masked._
+ *    class MaskedServlet extends ScalatraServlet
+ *      with ServletLogger
+ *      with PlainLogFormatter
+ *      with MaskedRemoteAddress
+ *      with MaskedRemoteUser
+ *      with DebugEnhancedLogging {
+ *
  *      get("/") {
  *        Ok("All is well").logResponse
  *      }
@@ -60,11 +86,13 @@ import org.scalatra.ActionResult
  * }}}
  *
  * ==Extension==
- * To write custom extensions to the log formatter, create a trait that extends either `RequestLogExtensionBase`
- * or `ResponseLogExtensionBase`. In this trait, implement the desired method (`formatHeader`, `formatParameter`,
- * `formatResponseHeader` or `formatActionHeader`), using an `abstract override` (which is important for mixing in
- * this formatter with the others). Keep in mind that the formatter should only return a formatted version of the
- * input and not mutate or perform side effects on it.
+ *
+ * For a variant of a `MaskedLogFormatter` component you can create a trait that extends either
+ * `RequestLogExtensionBase` or `ResponseLogExtensionBase`. In this trait, implement the desired
+ * method (`formatHeader`, `formatParameter`, `formatResponseHeader` or `formatActionHeader`),
+ * using an `abstract override` (which is important for mixing in this formatter with the others).
+ * Keep in mind that the formatter should only return a formatted version of the input and not
+ * mutate or perform side effects on it.
  *
  * {{{
  *    trait MyCustomRequestHeaderFormatter extends RequestLogExtensionBase {
@@ -83,7 +111,12 @@ import org.scalatra.ActionResult
  *      }
  *    }
  *
- *    class ExampleServlet extends ScalatraServlet with ServletLogger with MyCustomRequestHeaderFormatter with DebugEnhancedLogging {
+ *    class ExampleServlet extends ScalatraServlet
+ *      with ServletLogger
+ *      with PlainLogFormatter
+ *      with MyCustomRequestHeaderFormatter
+ *      with DebugEnhancedLogging {
+ *
  *      get("/") {
  *        Ok("All is well").logResponse
  *      }
@@ -144,6 +177,10 @@ package object servlet {
     def logResponse(implicit responseLogger: AbstractServletLogger): ActionResult = {
       responseLogger.logResponse(actionResult)
     }
+  }
+
+  trait PlainLogFormatter extends RequestLogFormatter with ResponseLogFormatter {
+    this: ScalatraBase =>
   }
 
   type MaskedLogFormatter = masked.MaskedLogFormatter

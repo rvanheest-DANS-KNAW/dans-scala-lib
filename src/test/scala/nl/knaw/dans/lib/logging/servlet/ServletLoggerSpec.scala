@@ -27,7 +27,7 @@ class ServletLoggerSpec extends FlatSpec with Matchers with MockFactory with Ser
 
   private val mockedLogger = mock[Underlying]
 
-  private trait TestLogger extends ServletLogger {
+  private trait TestLogger extends ServletLogger with PlainLogFormatter {
     this: ScalatraBase =>
 
     override protected val logger: Logger = Logger(mockedLogger)
@@ -38,6 +38,18 @@ class ServletLoggerSpec extends FlatSpec with Matchers with MockFactory with Ser
     get("/") {
       contentType = "text/plain"
       Ok("How y'all doin'?").logResponse
+    }
+
+    get("/:input") {
+      contentType = "text/plain"
+      val input = params("input")
+      Ok(s"I received $input").logResponse
+    }
+
+    // POST /create?input=...
+    post("/create") {
+      val input = params("input")
+      Ok(s"I received $input").logResponse
     }
   }
 
@@ -74,6 +86,44 @@ class ServletLoggerSpec extends FlatSpec with Matchers with MockFactory with Ser
 
     get(testLoggerPath) {
       body shouldBe "How y'all doin'?"
+      status shouldBe 200
+    }
+  }
+
+  it should "log the parameter given in the URL" in {
+    val serverPort = localPort.fold("None")(_.toString)
+    val input = "my-input-string"
+
+    (() => mockedLogger.isInfoEnabled()) expects() twice() returning true
+    (mockedLogger.info(_: String)) expects where {
+      s: String =>
+        (s startsWith s"GET http://localhost:$serverPort$testLoggerPath/$input") &&
+          (s contains "remote=127.0.0.1")
+    } once()
+    (mockedLogger.info(_: String)) expects * once()
+
+    get(s"$testLoggerPath/$input") {
+      body shouldBe s"I received $input"
+      status shouldBe 200
+    }
+  }
+
+  it should "log the form parameter given in the URL" in {
+    val serverPort = localPort.fold("None")(_.toString)
+    val input = "my-input-string"
+
+    (() => mockedLogger.isInfoEnabled()) expects() twice() returning true
+    (mockedLogger.info(_: String)) expects where {
+      s: String =>
+        (s startsWith s"POST http://localhost:$serverPort$testLoggerPath/create") &&
+          (s contains "remote=127.0.0.1") &&
+          (s contains s"params=[input -> [$input]")
+    } once()
+    (mockedLogger.info(_: String)) expects * once()
+
+    // POST http://localhost:$serverPort/$testLoggerPath/create?input=$input
+    post(s"$testLoggerPath/create", "input" -> input) {
+      body shouldBe s"I received $input"
       status shouldBe 200
     }
   }
