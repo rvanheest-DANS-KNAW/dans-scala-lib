@@ -36,6 +36,7 @@ class ServletLoggerSpec extends FlatSpec with Matchers with MockFactory with Ser
   private class TestServlet() extends ScalatraServlet with TestLogger {
 
     get("/") {
+      // TODO test also paths with parameters like uuid's and file names
       contentType = "text/plain"
       Ok("How y'all doin'?").logResponse
     }

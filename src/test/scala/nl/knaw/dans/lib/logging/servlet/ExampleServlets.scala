@@ -15,24 +15,41 @@
  */
 package nl.knaw.dans.lib.logging.servlet
 
-import nl.knaw.dans.lib.logging.servlet.masked._
 import nl.knaw.dans.lib.logging.DebugEnhancedLogging
-import org.scalatra.{ Ok, ScalatraServlet }
+import nl.knaw.dans.lib.logging.servlet.masked._
+import org.scalatra.{ Ok, ScalatraBase, ScalatraServlet }
 
-class PlainLogServlet extends ScalatraServlet
-  with ServletLogger
+trait PlainServletLogger extends ServletLogger
   with PlainLogFormatter
   with DebugEnhancedLogging {
+  this: ScalatraBase =>
+}
+
+trait MaskedServletLogger extends ServletLogger
+  with MaskedLogFormatter
+  with DebugEnhancedLogging {
+  this: ScalatraBase =>
+}
+
+trait CustomServletLogger extends ServletLogger
+  with PlainLogFormatter
+  with MaskedRemoteAddress
+  with MaskedRemoteUser
+  with DebugEnhancedLogging {
+  this: ScalatraBase =>
+  // TODO how to mask (for example) cookies with a different name in a different way
+  //  with a single override or trait per type? For now we only have `scentry.auth.default.user`.
+}
+
+
+class PlainLogServlet extends ScalatraServlet with PlainServletLogger {
 
   get("/") {
     Ok("foobar").logResponse
   }
 }
 
-class MaskedLogServlet extends ScalatraServlet
-  with ServletLogger
-  with MaskedLogFormatter
-  with DebugEnhancedLogging {
+class MaskedLogServlet extends ScalatraServlet with MaskedServletLogger {
 
   get("/") {
     Ok("foobar").logResponse
