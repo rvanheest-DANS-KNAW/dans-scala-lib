@@ -23,6 +23,8 @@ import scala.collection.JavaConverters._
 trait ResponseLogFormatter {
   this: ScalatraBase =>
 
+  // TODO what is "this response"?
+  //  make clear that it might be more than the actionResult: the authHeaders
   /**
    * Constructs the `String` to be logged by `ServletLogger` about this response.
    *

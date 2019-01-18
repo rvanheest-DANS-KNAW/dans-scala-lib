@@ -47,6 +47,10 @@ import org.scalatra.ActionResult
  *    import org.scalatra.{ Ok, ScalatraServlet }
  *
  *    class ExampleServlet extends ScalatraServlet with ServletLogger with DebugEnhancedLogging {
+ *
+ *      // I'd like to see a mandatory choice between a MaskedLogFormatter, a PlainLogFormatter or a CustomLogFormatter.
+ *      // Not implicitly a plain log formatter.
+ *
  *      get("/") {
  *        Ok("All is well").logResponse
  *      }
@@ -60,6 +64,12 @@ import org.scalatra.ActionResult
  * }}}
  *
  * ==Extension==
+ *
+ * // This example is a bridge too far.
+ * // The typical use case would be a variation or mix of the PlainLogFormatter and/or the MaskedLogFormatter.
+ * // A CustomLogFormatter could extend a mix of Plain/Masked/Custom-Request/Response-LogFormatter.
+ * // The Custom-Request/Response-LogFormatter in turn can mix Plain/Masked/Custom traits.
+ *
  * To write custom extensions to the log formatter, create a trait that extends either `RequestLogExtensionBase`
  * or `ResponseLogExtensionBase`. In this trait, implement the desired method (`formatHeader`, `formatParameter`,
  * `formatResponseHeader` or `formatActionHeader`), using an `abstract override` (which is important for mixing in
