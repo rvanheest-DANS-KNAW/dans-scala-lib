@@ -13,31 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package nl.knaw.dans.lib.logging.servlet
+package nl.knaw.dans.lib.logging.servlet.examples
 
-import nl.knaw.dans.lib.logging.servlet.masked._
 import nl.knaw.dans.lib.logging.DebugEnhancedLogging
+import nl.knaw.dans.lib.logging.servlet._
+import nl.knaw.dans.lib.logging.servlet.masked._
 import org.scalatra.{ Ok, ScalatraServlet }
-
-class PlainLogServlet extends ScalatraServlet
-  with ServletLogger
-  with PlainLogFormatter
-  with DebugEnhancedLogging {
-
-  get("/") {
-    Ok("foobar").logResponse
-  }
-}
-
-class MaskedLogServlet extends ScalatraServlet
-  with ServletLogger
-  with MaskedLogFormatter
-  with DebugEnhancedLogging {
-
-  get("/") {
-    Ok("foobar").logResponse
-  }
-}
 
 class PartiallyMaskedLogServlet extends ScalatraServlet
   with ServletLogger

@@ -39,18 +39,18 @@ class MaskerSpec extends FlatSpec with Matchers {
 
   "formatCookieHeader" should "format a cookie with given header name" in {
     val cookieName = "my-cookie"
-    Masker.formatCookieHeader(cookieName)(cookieName -> Seq(cookie)) shouldBe
+    Masker.formatCookieHeader(cookieName)(Masker.formatCookie)(cookieName -> Seq(cookie)) shouldBe
       cookieName -> Seq(s"$cookieKey=****.****.****")
   }
 
   it should "format a cookie with given header name (after lowercasing)" in {
     val cookieName = "my-cookie"
-    Masker.formatCookieHeader(cookieName)(cookieName.toUpperCase -> Seq(cookie)) shouldBe
+    Masker.formatCookieHeader(cookieName)(Masker.formatCookie)(cookieName.toUpperCase -> Seq(cookie)) shouldBe
       cookieName.toUpperCase -> Seq(s"$cookieKey=****.****.****")
   }
 
   it should "not format a header with another name than the given one" in {
-    Masker.formatCookieHeader("my-cookie")("other-header" -> Seq("some value")) shouldBe
+    Masker.formatCookieHeader("my-cookie")(Masker.formatCookie)("other-header" -> Seq("some value")) shouldBe
       "other-header" -> Seq("some value")
   }
 

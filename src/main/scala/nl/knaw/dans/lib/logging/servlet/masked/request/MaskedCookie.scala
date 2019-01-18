@@ -23,6 +23,6 @@ private[masked] trait MaskedCookie extends RequestLogExtensionBase {
   this: ScalatraBase =>
 
   abstract override protected def formatHeader(header: HeaderMapEntry): HeaderMapEntry = {
-    Masker.formatCookieHeader("cookie")(super.formatHeader(header))
+    Masker.formatCookieHeader("cookie")(Masker.formatCookie)(super.formatHeader(header))
   }
 }
