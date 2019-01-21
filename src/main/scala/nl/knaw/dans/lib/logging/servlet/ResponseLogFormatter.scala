@@ -62,7 +62,7 @@ trait ResponseLogFormatter {
 
   private def getHeaderMap(response: HttpServletResponse): HeaderMap = {
     response.getHeaderNames.asScala.toSeq
-      .map(name => name -> Option(response.getHeaders(name)).fold(Seq[String]())(_.asScala.toSeq))
+      .map(name => name -> Option(response.getHeaders(name)).fold(Seq.empty[String])(_.asScala.toSeq))
       .toMap
   }
 
