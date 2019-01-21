@@ -16,14 +16,14 @@
 package nl.knaw.dans.lib.logging.servlet
 
 import com.typesafe.scalalogging.Logger
-import nl.knaw.dans.lib.fixtures.ServletFixture
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.{ FlatSpec, Matchers }
+import org.scalatra.test.EmbeddedJettyContainer
 import org.scalatra.test.scalatest.ScalatraSuite
 import org.scalatra.{ Ok, ScalatraBase, ScalatraServlet }
 import org.slf4j.{ Logger => Underlying }
 
-class ServletLoggerSpec extends FlatSpec with Matchers with MockFactory with ServletFixture with ScalatraSuite {
+class ServletLoggerSpec extends FlatSpec with Matchers with MockFactory with EmbeddedJettyContainer with ScalatraSuite {
 
   private val mockedLogger = mock[Underlying]
 

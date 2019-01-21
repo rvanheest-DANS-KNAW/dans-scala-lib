@@ -15,13 +15,13 @@
  */
 package nl.knaw.dans.lib.logging.servlet
 
-import nl.knaw.dans.lib.fixtures.ServletFixture
 import nl.knaw.dans.lib.logging.servlet.masked.MaskedRemoteAddress
 import org.scalatest.{ FlatSpec, Matchers }
+import org.scalatra.test.EmbeddedJettyContainer
 import org.scalatra.test.scalatest.ScalatraSuite
 import org.scalatra.{ ActionResult, Ok, ScalatraBase, ScalatraServlet }
 
-class AbstractServletLoggerSpec extends FlatSpec with Matchers with ServletFixture with ScalatraSuite {
+class AbstractServletLoggerSpec extends FlatSpec with Matchers with EmbeddedJettyContainer with ScalatraSuite {
 
   private trait TestLoggers extends AbstractServletLogger
     with ResponseLogFormatter

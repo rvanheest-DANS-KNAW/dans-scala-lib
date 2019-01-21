@@ -16,7 +16,6 @@
 package nl.knaw.dans.lib.logging.servlet
 
 import javax.servlet.http.HttpServletRequest
-import nl.knaw.dans.lib.fixtures.TestServletFixture
 import nl.knaw.dans.lib.logging.servlet.masked.MaskedRequestLogFormatter
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.{ FlatSpec, Matchers }
