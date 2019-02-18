@@ -22,7 +22,7 @@
     <parent>
         <groupId>nl.knaw.dans.shared</groupId>
         <artifactId>dans-scala-project</artifactId>
-        <version>2.2.3</version>
+        <version>3.0.0-beta-1</version>
     </parent>
 
     <groupId>nl.knaw.dans.lib</groupId>
@@ -38,6 +38,31 @@
     </scm>
 
     <dependencies>
+        <!-- testing -->
+        <dependency>
+            <groupId>org.scalatest</groupId>
+            <artifactId>scalatest_2.12</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.scalamock</groupId>
+            <artifactId>scalamock_2.12</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.scalatra</groupId>
+            <artifactId>scalatra-scalatest_2.12</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-server</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Scala utils -->
         <dependency>
             <groupId>com.typesafe.scala-logging</groupId>
             <artifactId>scala-logging_2.12</artifactId>
@@ -46,9 +71,18 @@
             <groupId>com.lihaoyi</groupId>
             <artifactId>sourcecode_2.12</artifactId>
         </dependency>
+
+        <!-- service -->
         <dependency>
-            <groupId>org.scalatest</groupId>
-            <artifactId>scalatest_2.12</artifactId>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.scalatra</groupId>
+            <artifactId>scalatra_2.12</artifactId>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
