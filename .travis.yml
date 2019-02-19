@@ -3,3 +3,15 @@ jdk: oraclejdk8
 cache:
   directories:
     - "$HOME/.m2/repository"
+deploy:
+  provider: pages
+  skip-cleanup: true
+  local-dir: target/site/scaladocs
+  keep-history: true
+  verbose: true
+  github-token: "$GH_TOKEN"
+  on:
+    branch: master
+env:
+  global:
+    secure: UYHkX+c/5I+wWtytnxOfpBV2rGlAMKz9HAv89xKiF3RIRI5jMVYGFganZoUK6+ddwH887v5mID2NTfGjUDr6ORUZM2f7YIYjZL/EAi1g4s4Hn7kzg+18yP9Qjnefmt2KsoDHC/sPgJXEiaB4yv+yhioHmIXTr3/EeuINrNdlMFFswCIXvIZT4SBcPspwvXRqvV3hY1JgfzZXPvQv5P8k7x/M5MsrAUa+jkZLa1Ye2YumidrJtffVepb5p7lGR5ZVwDHVN/h5w8hUgfZtk612pbLnMMLubfKb3pUlAnZHYeeS6TuQotToJMCq6Xn/lGmfOa4Fib7eWXz3Ql5JxFViZs0mZqU8juxHpjGoLIcoVAFzuUoTF4h5kWtp0riMTQM9myBhqfBFuU/8r1fr04W8OBbUyutfqBpj40PlaWWYYVM8DQPzyLlgxNsLqnlpgSZRaEm50vQDsJxMctLWjKwvpZurgA4h9Hkl2+0MHe409mvMrRegFujCfVap8iKp4LZuNcxSnu0efPaj1cssYaD1VGMWbpS8Ut8pgW//Q7OFzmwCWCNK3CN6R7VECL9n6vLM8CdSw47OUT/C6DzNSmbOfoUO5KNY0zOpt4VIiQVyD+Y1/jlqt2jpBql2OYwrWUocvY2NQV8WT0gWAkahlOkV7DFMwuAZeAF+SahiF5/OftY=
