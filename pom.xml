@@ -33,7 +33,8 @@
     <description>Library with generic extensions for Scala-based DANS modules</description>
 
     <scm>
-        <developerConnection>scm:git:https://github.com/DANS-KNAW/${project.artifactId}</developerConnection>
+        <!-- Note: GitHub repo has a different name than the artifact -->  
+        <developerConnection>scm:git:https://github.com/DANS-KNAW/dans-scala-lib</developerConnection>
         <tag>HEAD</tag>
     </scm>
 
