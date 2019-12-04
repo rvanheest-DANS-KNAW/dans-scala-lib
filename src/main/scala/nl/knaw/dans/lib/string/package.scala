@@ -15,6 +15,8 @@
  */
 package nl.knaw.dans.lib
 
+import java.util.UUID
+
 package object string {
 
   implicit class StringExtensions(val s: String) extends AnyVal {
@@ -51,5 +53,21 @@ package object string {
      *         the input otherwise
      */
     def emptyIfBlank: String = s.toOption.getOrElse("")
+
+    /**
+     * Parses the `String` into a `UUID` if it is well-formed, meaning it conforms to the regex
+     * `^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$`.
+     * 
+     * @return a `UUID` if it is well-formed; an error otherwise.
+     */
+    def toUUID: Either[UUIDError, UUID] = {
+      val uuidRegex = "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
+      if (s matches uuidRegex)
+        Right(UUID.fromString(s))
+      else
+        Left(UUIDError(s))
+    }
   }
+  
+  case class UUIDError(s: String) extends Exception(s"String '$s' is not a UUID")
 }
