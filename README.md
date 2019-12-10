@@ -31,7 +31,7 @@ To use this libary in a Maven-based project:
                 <releases>
                     <enabled>true</enabled>
                 </releases>
-                <url>http://maven.dans.knaw.nl/</url>
+                <url>https://maven.dans.knaw.nl/releases/</url>
             </repository>
         </repositories>
 
